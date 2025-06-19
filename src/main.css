@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+button {
+  background: linear-gradient(90deg, #832a9b 0%, #1c0663 100%);
+  font-weight: bold;
+  box-shadow: inset 0px 0px 3px 0px #FFFFFF;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 20px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  color: White;
+}
+
+.gutter {
+  background-color: #2d2d2d;
+  background-image: radial-gradient(#ccc 30%, transparent 30%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 8px 8px;
+  cursor: col-resize;
+}/*# sourceMappingURL=main.css.map */
