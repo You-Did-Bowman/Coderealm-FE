@@ -40,5 +40,18 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "- Javascript - Vite - React     - Context     - useState     - useEffect     - Routes - Tailwind - CSS",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/You-Did-Bowman/Coderealm-FE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/You-Did-Bowman/Coderealm-FE/issues"
+  },
+  "homepage": "https://github.com/You-Did-Bowman/Coderealm-FE#readme"
 }
