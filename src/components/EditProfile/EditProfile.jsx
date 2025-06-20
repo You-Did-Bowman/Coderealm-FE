@@ -26,7 +26,7 @@ function EditProfile() {
 
     //JB: instead try to fetch the api to update the user (postman can do this but the stupid browser is stupid)
     try {
-      const res = await fetch(`http://localhost:5000/api/user/${userId}/edit`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/edit`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ function EditProfile() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/user/${userId}/upload`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/upload`,
         {
           method: "POST",
           headers: {

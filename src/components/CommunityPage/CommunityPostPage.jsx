@@ -51,7 +51,9 @@ const CommunityPostPage = () => {
     try {
       setLoading(true);
       const res = await fetch(
+
         `${import.meta.env.VITE_BACKEND_URL}/posts/communities/${communityId}?limit=${LIMIT}&offset=${currentOffset}`,
+
         { credentials: "include" }
       );
   
