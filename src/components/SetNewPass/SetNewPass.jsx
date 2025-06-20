@@ -13,7 +13,7 @@ const SetNewPass = () => {
    
 
     try {
-      const res = await fetch(`${VITE_BACKEND_URL}/users/reset-password`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, newPassword: password }),      });

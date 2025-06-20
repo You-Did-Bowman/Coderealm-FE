@@ -30,7 +30,7 @@ const RegisterPage = () => {
     setSuccess(null);
 
     try {
-      const res = await fetch(`${VITE_BACKEND_URL}/users/register`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
