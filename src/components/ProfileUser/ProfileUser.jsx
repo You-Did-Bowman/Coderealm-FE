@@ -35,7 +35,7 @@ function ProfilNav() {
         }
 
         const response = await fetch(
-          `${VITE_BACKEND_URL}/api/user/progress`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/progress`,
           {
             headers: {
               Authorization: `Bearer ${currentToken}`,
@@ -77,8 +77,8 @@ function ProfilNav() {
 
         // Use /me endpoint if no id is provided, otherwise use /:id endpoint
         const endpoint = userId
-          ? `${VITE_BACKEND_URL}/api/user/${profileId}`
-          : `${VITE_BACKEND_URL}/api/user/me`;
+          ? `${import.meta.env.VITE_BACKEND_URL}/api/user/${profileId}`
+          : `${import.meta.env.VITE_BACKEND_URL}/api/user/me`;
 
         const response = await fetch(endpoint, {
           headers: {
@@ -111,7 +111,7 @@ function ProfilNav() {
     const fetchBadges = async () => {
       try {
         const response = await fetch(
-          `${VITE_BACKEND_URL}/api/user/${profileId}/getBadges`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/${profileId}/getBadges`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
