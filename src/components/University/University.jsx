@@ -458,7 +458,7 @@ export default function University() {
   // const handleNextExercise = async () => {
   //   try {
   //     const response = await fetch(
-  //       `http://localhost:5000/api/courses/exercises/${exerciseId}/next`,
+  //       `${import.meta.env.VITE_BACKEND_URL}api/courses/exercises/${exerciseId}/next`,
   //       { credentials: "include" }
   //     );
 
