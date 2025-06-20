@@ -35,7 +35,7 @@ function ProfilNav() {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/user/progress`,
+          `${VITE_BACKEND_URL}/api/user/progress`,
           {
             headers: {
               Authorization: `Bearer ${currentToken}`,
@@ -77,8 +77,8 @@ function ProfilNav() {
 
         // Use /me endpoint if no id is provided, otherwise use /:id endpoint
         const endpoint = userId
-          ? `http://localhost:5000/api/user/${profileId}`
-          : "http://localhost:5000/api/user/me";
+          ? `${VITE_BACKEND_URL}/api/user/${profileId}`
+          : `${VITE_BACKEND_URL}/api/user/me`;
 
         const response = await fetch(endpoint, {
           headers: {
@@ -111,7 +111,7 @@ function ProfilNav() {
     const fetchBadges = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/user/${profileId}/getBadges`,
+          `${VITE_BACKEND_URL}/api/user/${profileId}/getBadges`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -132,7 +132,7 @@ function ProfilNav() {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/posts/userPosts/${profileId}`,
+          `${VITE_BACKEN_URL}/posts/userPosts/${profileId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ function ProfilNav() {
     const fetchProfileAvatar = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/user/${profileId}/getProfilPic`,
+          `${VITE_BACKEN_URL}/api/user/${profileId}/getProfilPic`,
           {
             method: "GET",
             headers: {
