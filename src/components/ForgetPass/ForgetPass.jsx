@@ -13,7 +13,7 @@ const ForgetPass = () => {
     setMessage(null);
 
     try {
-      const res = await fetch("http://localhost:5000/users/forgot-password", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/forgot-password` , {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

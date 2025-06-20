@@ -73,7 +73,7 @@ export default function Forumia() {
     try {
       console.log("Attempting to delete post with ID:", postId);
 
-      const res = await fetch(`http://localhost:5000/posts/${postId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -95,7 +95,7 @@ export default function Forumia() {
   const fetchProfileAvatar = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/user/${userId}/getProfilPic`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/getProfilPic`,
         {
           method: "GET",
           headers: {
@@ -117,7 +117,7 @@ export default function Forumia() {
   // JB: count all posts in the DB
   const countAllPosts = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/posts/count/allPosts`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/count/allPosts`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

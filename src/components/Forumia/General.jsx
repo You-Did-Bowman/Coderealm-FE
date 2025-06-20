@@ -35,7 +35,7 @@ const General = ({ posts }) => {
   const fetchProfileAvatar = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/user/${userId}/getProfilPic`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/getProfilPic`,
         {
           method: "GET",
           headers: {
