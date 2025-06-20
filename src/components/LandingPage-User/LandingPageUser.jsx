@@ -35,7 +35,7 @@ const LandingPageUser = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/user/progress`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/progress`, {
         headers: {
           Authorization: `Bearer ${currentToken}`,
           "Content-Type": "application/json",
@@ -71,8 +71,8 @@ const LandingPageUser = () => {
 
       // Use /me endpoint if no id is provided, otherwise use /:id endpoint
       const endpoint = id
-        ? `http://localhost:5000/api/user/${id}`
-        : "http://localhost:5000/api/user/me";
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/user/me`;
 
       const response = await fetch(endpoint, {
         headers: {
@@ -109,7 +109,7 @@ const LandingPageUser = () => {
       }
 
       const res = await fetch(
-        `http://localhost:5000/api/user/${id}/getProfilPic`,
+       `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}/getProfilPic`,
         {
           method: "GET",
           headers: {
@@ -157,7 +157,7 @@ const LandingPageUser = () => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/users/sendInviteMail", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/sendInviteMail` , {
         method: "POST",
         headers: {
           Authorization: `Bearer ${currentToken}`,
