@@ -160,7 +160,7 @@ const CommunityPostPage = () => {
   const saveEditedComment = async (commentId, postId) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}posts/comments/${commentId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/comments/${commentId}`,
         {
           method: "PATCH",
           credentials: "include",
@@ -322,7 +322,7 @@ const CommunityPostPage = () => {
     try {
       const currentToken = localStorage.getItem("token");
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}api/user/${userId}/getProfilPic`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/getProfilPic`,
         {
           method: "GET",
           headers: {
