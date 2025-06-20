@@ -16,7 +16,7 @@ const SinglePostAndComments = ({
     e.preventDefault();
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/${postId}/comments`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/${postId}/comments`,
         {
           method: "POST",
           credentials: "include",
@@ -49,7 +49,7 @@ const SinglePostAndComments = ({
   const deleteComment = async (commentId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/comments/${commentId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/comments/${commentId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -71,7 +71,7 @@ const SinglePostAndComments = ({
   const saveEditedComment = async (commentId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/comments/${commentId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/comments/${commentId}`,
         {
           method: "PATCH",
           credentials: "include",

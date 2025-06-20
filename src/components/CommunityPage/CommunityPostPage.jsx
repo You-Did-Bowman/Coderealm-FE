@@ -51,7 +51,7 @@ const CommunityPostPage = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `http://localhost:5000/posts/communities/${communityId}?limit=${LIMIT}&offset=${currentOffset}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/communities/${communityId}?limit=${LIMIT}&offset=${currentOffset}`,
         { credentials: "include" }
       );
   
@@ -96,7 +96,7 @@ const CommunityPostPage = () => {
   const addComment = async (postId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/${postId}/comments`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/${postId}/comments`,
         {
           method: "POST",
           credentials: "include",

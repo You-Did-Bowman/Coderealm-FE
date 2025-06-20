@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
     if (!userId || !token) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/user/${userId}/getProfilPic`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/getProfilPic`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users/logout", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -98,7 +98,7 @@ export const UserProvider = ({ children }) => {
 
   // const fetchingData = async () => {
   //   try {
-  //     const res = await fetch("http://localhost:5000/posts");
+  //     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts`);
 
   //     if (!res.ok) {
   //       setMessage("Something went wrong fetching posts");
@@ -120,7 +120,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchingData = async (limit , offset ) => {
     try {
-      const res = await fetch(`http://localhost:5000/posts?limit=${limit}&offset=${offset}`);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts?limit=${limit}&offset=${offset}`);
   
       if (!res.ok) {
         setMessage("Something went wrong fetching posts");
