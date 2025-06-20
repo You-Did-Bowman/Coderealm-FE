@@ -132,7 +132,7 @@ const CommunityPostPage = () => {
   const deleteComment = async (commentId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/comments/${commentId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/comments/${commentId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -160,7 +160,7 @@ const CommunityPostPage = () => {
   const saveEditedComment = async (commentId, postId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/posts/comments/${commentId}`,
+        `${import.meta.env.VITE_BACKEND_URL}posts/comments/${commentId}`,
         {
           method: "PATCH",
           credentials: "include",
@@ -203,7 +203,7 @@ const CommunityPostPage = () => {
   const toggleLike = async (postId) => {
     const isLiked = likedPosts.has(postId);
     try {
-      const res = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}/like`, {
         method: isLiked ? "DELETE" : "POST",
         credentials: "include",
       });
@@ -245,7 +245,7 @@ const CommunityPostPage = () => {
   const toggleDislike = async (postId) => {
     const isDisliked = dislikedPosts.has(postId);
     try {
-      const res = await fetch(`http://localhost:5000/posts/${postId}/dislike`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}/dislike`, {
         method: isDisliked ? "DELETE" : "POST",
         credentials: "include",
       });
@@ -286,7 +286,7 @@ const CommunityPostPage = () => {
     try {
       console.log("Attempting to delete post with ID:", postId);
 
-      const res = await fetch(`http://localhost:5000/posts/${postId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -322,7 +322,7 @@ const CommunityPostPage = () => {
     try {
       const currentToken = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/user/${userId}/getProfilPic`,
+        `${import.meta.env.VITE_BACKEND_URL}api/user/${userId}/getProfilPic`,
         {
           method: "GET",
           headers: {
