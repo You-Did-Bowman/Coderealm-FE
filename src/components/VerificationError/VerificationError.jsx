@@ -7,7 +7,7 @@ const VerificationError = () => {
   const handleResend = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/users/resend-verification", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/resend-verification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
