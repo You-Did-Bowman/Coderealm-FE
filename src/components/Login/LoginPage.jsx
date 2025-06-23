@@ -156,6 +156,8 @@ const LoginPage = () => {
     }
   }, []);
 
+  console.log("VITE_BACKEND_URL:", import.meta.env.VITE_BACKEND_URL);
+
   return (
     <section className="bg-background min-h-screen flex items-center justify-center">
       <div className="p-8 rounded-xl shadow-lg sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4">
