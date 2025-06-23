@@ -58,7 +58,7 @@ const NavBar = () => {
             "forumia",
             "playground",
             "Chatbot",
-            //"bugadune",
+            "bugadune",
             //"csscrypta",
             //"towerofapion",
           ].map((path) => (
