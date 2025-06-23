@@ -56,7 +56,7 @@ const LoginPage = () => {
         credentials: "include",
         body: JSON.stringify({ credential: idToken }),
       });
-
+      console.log("VITE_BACKEND_URL:", import.meta.env.VITE_BACKEND_URL);
       console.log("Raw response:", res);
       const data = await res.json();
       console.log("Parsed data:", data);
