@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom";
-const CreatePost = () => {
+const CreatePost = ( {setNewPost}) => {
 
-  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [community, setCommunity] = useState("");
   const [textValue, setTextValue] = useState("");
@@ -19,7 +17,7 @@ const CreatePost = () => {
   const sendingThePost = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}posts`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -44,7 +42,10 @@ const CreatePost = () => {
       setCommunity("");
       setTextValue("");
       setMessage("Post created successfully!");
-    setTimeout(() => {navigate('/forumia')},2000)
+    setTimeout(() => {
+     
+      setNewPost(false)
+    },2000)
        
     } catch (error) {
       console.error("Error sending the post:", error);
@@ -52,10 +53,13 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f1c] flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen w-full  z-10 top-0 left-0 fixed bg-[#0f0f1c] flex items-center justify-center px-4 py-10">
        
       <section className="w-full max-w-3xl p-6 bg-primary rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
-      <button onClick={()=>navigate('/forumia')} className="float-right w-[25px] font-bold text-white text-xl hover:text-red-500"  role="close">X</button>
+      <button    onClick={() => {
+ 
+    setNewPost(false);
+  }} className="float-right w-[25px] font-bold text-white text-xl hover:text-red-500"  role="close">X</button>
         <h2 className="text-secondary text-3xl font-vt323 mb-6 border-b-2 border-secondary pb-2">
           Create New Post
         </h2>
