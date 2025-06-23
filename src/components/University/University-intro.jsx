@@ -4,7 +4,7 @@ import universityImage from "../../assets/images/university.png";
 import { UserContext } from "../../contexts/userIdContext";
 
 const UniversityIntro = () => {
-  const { user } = useContext(UserContext);
+  const { user, token } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -62,13 +62,14 @@ const UniversityIntro = () => {
     if (!activeCourse || !user?.id) return;
 
     const fetchCourseExercises = async () => {
+      const currentToken = token || localStorage.getItem("token");
       try {
         const response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
           }/api/courses/${activeCourse}/exercises`,
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: `Bearer ${currentToken}` },
             credentials: "include",
           }
         );
