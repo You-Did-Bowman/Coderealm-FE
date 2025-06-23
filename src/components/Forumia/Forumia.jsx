@@ -9,7 +9,7 @@ import UniversityOfTerminalia from "./UniversityOfTerminalia";
 import TheHub from "./TheHub";
 import { UserContext } from "../../contexts/userIdContext";
 import { useNavigate } from "react-router-dom";
-
+import CreatePost from "../CreatePost/CreatePost";
 export default function Forumia() {
   // -*-*- STATES -*-*-
   const [calcMembers, setCalcMembers] = useState(null);
@@ -18,7 +18,7 @@ export default function Forumia() {
   const [singlePostInfos, setSinglePostObject] = useState({});
   const [profileAvatar, setProfileAvatar] = useState({});
   const [amountPosts, setAmountPosts] = useState();
-
+  const [newPost, setNewPost] = useState(false);
   // -*-*- CONTEXTS -*-*-
   const { posts, userId, setPosts, fetchingData, token } =
     useContext(UserContext);
@@ -58,7 +58,7 @@ export default function Forumia() {
       });
     });
 
-    setCalcMembers(members.size); // setMemberCount should be a useState setter
+    setCalcMembers(members.size);
     // Optional: log who they are
   }, [posts]);
 
@@ -253,13 +253,13 @@ export default function Forumia() {
           <aside className="w-full border-2 border-accent rounded-md md:rounded-2xl  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
             {/* Buttons */}
             <article className="flex gap-4 justify-end items-center px-6">
-              <a href="/createPost" rel="noopener noreferrer">
-                <button className="bg-primary rounded-2xl p-2 px-3 text-sm font-medium text-white shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(0,254,254,0.2)] hover:shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(171,239,254,0.25)]">
+                <button onClick={()=>setNewPost(true)} className="bg-primary rounded-2xl p-2 px-3 text-sm font-medium text-white shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(0,254,254,0.2)] hover:shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(171,239,254,0.25)]">
                   New Post
                 </button>
-              </a>
+             
             </article>
-
+      {/* Create Post Overlay */}
+      { newPost && <CreatePost setNewPost={setNewPost}/>}
             {/* Latest Posts */}
             <article className="bg-primary w-[90%] max-w-full mx-auto mt-10 p-6  rounded-md">
               <h3 className="text-accent mb-8 font-vt323 text-[25px] font-normal ">
