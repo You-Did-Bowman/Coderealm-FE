@@ -54,12 +54,12 @@
 //   );
 // }
 
-import JadaWireframe from "../Jada/JadaWireframe.jsx";
+import JadaScene from "../Jada/JadaScene.jsx";
 
 export default function Bugadune() {
   return (
     <>
-      <JadaWireframe />
+      <JadaScene />
     </>
   );
 }
