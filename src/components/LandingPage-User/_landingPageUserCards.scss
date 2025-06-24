@@ -1,0 +1,22 @@
+@import "../../style/variables.scss";
+@import "../../style/mixins.scss";
+
+.test {
+    margin: 0 auto;
+}
+
+.lpuComingSoonH2 {
+    @extend %h2Profile;
+    color: $pistachio;
+    text-align: center;
+    margin: 2em auto;
+   
+}
+
+.lpuComingSoonWrapper {
+    display: flex;
+    border: 2px solid yellow;
+    justify-content: space-around;
+    width: 80%;
+    margin: 0 auto;
+}

@@ -11,5 +11,20 @@
 %h3Profile {
   font-family: $code-font;
   font-size: 1.5em;
-  padding: .5em 0
+  padding: 0.5em 0;
+}
+
+@mixin bg-circle {
+  position: absolute;
+  background: radial-gradient(
+    circle,
+    $pistachio 0%,
+    $bangladeshGreen 10%,
+    $richBlack 100%
+  );
+  border-radius: 50%;
+  filter: blur(50px);
+  width: 800px;
+  height: 800px;
+  opacity: 0.5;
 }
