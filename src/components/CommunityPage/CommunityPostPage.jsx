@@ -356,11 +356,24 @@ const CommunityPostPage = () => {
   }, [communityPosts]);
 
   return (
-    <main
+ 
+
+       
+    <section className="gradient-bg">
+
+    <div className="gradient-container">
+    <div className="g1"></div>
+     <div className="g2"></div>
+     <div className="g3"></div>
+
+
+
+
+     <main
       className={
         communityPosts.length > 0
-          ? "p-5 bg-background min-h-screen text-white    "
-          : '"p-5 bg-background min-h-screen text-white p-3  flex  "'
+          ? "p-5  min-h-screen text-white    "
+          : '"p-5  min-h-screen text-white p-3  flex  "'
       }
     >
           
@@ -376,7 +389,7 @@ const CommunityPostPage = () => {
       {newPost && < CreatePost  setNewPost={setNewPost} />}
 
 
-        <h1 className="text-secondary font-vt323 text-3xl mb-4">
+        <h1 className="text-red-300 font-vt323 text-3xl mb-4">
           Posts in {community}
         </h1>
     
@@ -396,7 +409,7 @@ const CommunityPostPage = () => {
 
             <div
               key={post.id}
-              className="relative border border-gray-700 p-4 rounded-md bg-primary hover:bg-secondary/20 transition space-y-4"
+              className="relative border border-gray-700 p-4 rounded-md bg-gradient-to-r from-[#1F404D] via-[#237A53] to-[#718575] hover:bg-secondary/20 transition space-y-4"
             >
               {/* Delete button */}
               {post.user_id === Number(userId) && (
@@ -433,8 +446,8 @@ const CommunityPostPage = () => {
               </div>
 
               {/* Post body */}
-              <p className="text-sm text-gray-200">{post.body}</p>
-              <div className="flex gap-4 mt-2">
+              <p className="text-sm text-gray-200 ">{post.body}</p>
+              <div className="flex gap-4 mt-5">
                 <button
                   onClick={() => toggleLike(post.id)}
                   className={`flex items-center gap-1 ${
@@ -472,29 +485,29 @@ const CommunityPostPage = () => {
 
                   {/* Comment section */}
                   {visibleComments === post.id && (
-                    <div className="mt-3 border-t border-gray-600 pt-3 space-y-2">
+                    <div className="mt-4  pt-3 space-y-2">
                       {post.comments.map((comment) => {
                         const isEditing = editCommentId === comment.id;
 
                         return (
                           <div
                             key={comment.id}
-                            className="text-sm border border-gray-700 p-2 rounded-md bg-background"
+                            className="text-sm my-5  p-2 rounded-md  border   border-gray-400  hover:bg-green-700 transition"
                           >
                             {/* Show editable text if editing */}
                             {isEditing ? (
                               <textarea
-                                className="w-full text-sm p-2 bg-primary text-white border border-gray-600 rounded resize-none"
+                                className="w-full text-sm p-2 bg-gray-300   text-black border border-none rounded resize-none"
                                 value={editedContent}
                                 onChange={(e) =>
                                   setEditedContent(e.target.value)
                                 }
                               />
                             ) : (
-                              <p className="text-gray-300">{comment.content}</p>
+                              <p className="  text-white">{comment.content}</p>
                             )}
 
-                            <div className="text-xs text-gray-500 mt-1">
+                            <div className="text-xs text-gray-400 mt-1">
                               by {comment.commenter ?? "Anonymous"} on{" "}
                               {new Date(
                                 comment.created_at
@@ -555,7 +568,7 @@ const CommunityPostPage = () => {
               <div className="pt-3 border-t border-gray-700">
                 <textarea
                   rows={2}
-                  className="w-full p-2 rounded-md bg-primary text-sm text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-secondary resize-none"
+                  className="w-full p-2 rounded-md bg-gray-300 text-sm text-black border border-none focus:outline-none focus:ring-1 focus:ring-secondary resize-none"
                   placeholder="Write a comment..."
                   value={commentValueTxt[post.id] || ""}
                   onChange={(e) =>
@@ -594,7 +607,8 @@ const CommunityPostPage = () => {
     </main>
 
 
-
+    </div>
+    </section>
   );
 };
 

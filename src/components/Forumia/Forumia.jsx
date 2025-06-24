@@ -143,6 +143,18 @@ export default function Forumia() {
   }, [posts]);
 
   return (
+
+    
+  
+    
+
+    <section className="gradient-bg">
+
+   <div className="gradient-container">
+   <div className="g1"></div>
+    <div className="g2"></div>
+    <div className="g3"></div>
+
     <>
       {/* overlay with the single post component  */}
       {renderSinglePostPage && (
@@ -154,18 +166,18 @@ export default function Forumia() {
           refreshPosts={() => fetchingData(LIMIT, 0)}
         />
       )}
-      <main className="flex flex-col p-5 bg-background">
+      <main className="flex flex-col p-5">
         <div className="flex flex-col md:flex-row gap-10  m-auto w-[80%] px-4 md:px-0">
           {/* left side */}
           <section className="w-full md:w-1/3 space-y-8 ">
-            <article className="p-6 text-white bg-background border-2 border-accent rounded-md md:rounded-2xl py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+            <article className="p-6 text-white border-2 border-accent rounded-md md:rounded-2xl py-14 shadow-[0_8px_30px_rgba(200,200,180,0.2)]">
               <h3 className=" font-vt323 text-[25px] font-normal  text-accent">
                 Members online
               </h3>
               {/* Loop here */}
               <p className="py-2">User1, Doniweb, Edal, TommysNetwork</p>
             </article>
-            <article className="p-6 text-white bg-background border-2 max-h-[450px] overflow-y-auto  custom-scrollbar  border-accent rounded-md md:rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+            <article className="p-6 text-white  border-2 max-h-[450px] overflow-y-auto  custom-scrollbar  border-accent rounded-md md:rounded-2xl shadow-[0_8px_30px_rgba(200,200,180,0.2)]">
               <h3 className="font-vt323 w-full  text-[25px] font-normal text-accent">
                 Top
               </h3>
@@ -177,7 +189,7 @@ export default function Forumia() {
                   <div
                     key={post.id}
                     onClick={() => oneSinglePost(post)}
-                    className="relative mt-6 w-full max-w-xs cursor-pointer hover:bg-secondary/20 p-3 rounded-md overflow-hidden flex items-center gap-4 border border-gray-700"
+                    className="relative mt-6 w-full  cursor-pointer hover:bg-green-700 p-3 rounded-md overflow-hidden flex items-center gap-4 border border-gray-700"
                   >
                     {/* Delete Button - styled and positioned in top-right */}
 
@@ -188,7 +200,7 @@ export default function Forumia() {
                           e.stopPropagation(); // Prevent parent div click
                           deleteSinglePost(post.id);
                         }}
-                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-md bg-red font-bold transition duration-200"
+                        className="absolute top-2 right-2 text-gray-400  hover:text-red-500 text-md bg-red font-bold transition duration-200"
                         title="Delete Post"
                       >
                         ×
@@ -223,7 +235,7 @@ export default function Forumia() {
             </article>
 
             {
-              <article className="p-6 text-white bg-background border-2 border-accent rounded-md md:rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+              <article className="p-6 text-white  border-2 border-accent rounded-md md:rounded-2xl shadow-[0_8px_30px_rgba(200,200,180,0.2)]">
                 <h3 className="font-vt323 text-[25px] font-normal  text-accent">
                   Forum Statistics
                 </h3>
@@ -250,7 +262,7 @@ export default function Forumia() {
           </section>
 
           {/* right side */}
-          <aside className="w-full border-2 border-accent rounded-md md:rounded-2xl  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+          <aside className="w-full border-2 bg-[#0323;] border-accent rounded-md md:rounded-2xl z-10  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
             {/* Buttons */}
             <article className="flex gap-4 justify-end items-center px-6">
                 <button onClick={()=>setNewPost(true)} className="bg-primary rounded-2xl p-2 px-3 text-sm font-medium text-white shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(0,254,254,0.2)] hover:shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(171,239,254,0.25)]">
@@ -259,9 +271,9 @@ export default function Forumia() {
              
             </article>
       {/* Create Post Overlay */}
-      { newPost && <CreatePost setNewPost={setNewPost}/>}
+      { newPost && <CreatePost fetchingData={()=>fetchingData(LIMIT,0)}  setNewPost={setNewPost}/>}
             {/* Latest Posts */}
-            <article className="bg-primary w-[90%] max-w-full mx-auto mt-10 p-6  rounded-md">
+            <article className="border border-dashed  w-[90%] max-w-full mx-auto mt-10 p-6  rounded-md">
               <h3 className="text-accent mb-8 font-vt323 text-[25px] font-normal ">
                 Latest Posts
               </h3>
@@ -271,7 +283,7 @@ export default function Forumia() {
                   <div
                     onClick={() => oneSinglePost(post)}
                     key={post.id}
-                    className="relative cursor-pointer flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-accent pb-4 hover:bg-secondary/20 p-3 hover:rounded-md transition-colors"
+                    className="relative cursor-pointer flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-accent last:border-none pb-4 hover:bg-green-700 p-3 hover:rounded-md transition-colors"
                     role="button"
                     tabIndex={0}
                   >
@@ -366,5 +378,10 @@ export default function Forumia() {
         </div>
       </main>
     </>
+   </div>
+    </section>
+
+
+   
   );
 }

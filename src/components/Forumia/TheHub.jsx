@@ -68,7 +68,7 @@ const TheHub = ({ posts }) => {
 
   return (
     <article className="w-[90%] max-w-full mx-auto mt-10 p-6">
-      <h3 className="text-white border-b-4 py-4 border-accent font-vt323 text-[25px] font-normal">
+      <h3 className="text-white border-b-4 py-4 border-red-300 border-dashed font-vt323 text-[25px] font-normal">
         The Hub
       </h3>
 
@@ -76,7 +76,7 @@ const TheHub = ({ posts }) => {
         {hubPosts.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-secondary/20 p-3 hover:rounded-md transition-colors"
+            className="flex flex-col sm:flex-row justify-between items-start sm:items-center last:border-none border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-green-700 p-3 hover:rounded-md transition-colors"
             role="button"
           >
             {/* Left side */}
@@ -102,7 +102,7 @@ const TheHub = ({ posts }) => {
               </div>
 
               {item.postsLength > 0 && (
-                <div className="relative w-3/5 justify-evenly pl-4 ml-4 flex items-center gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-secondary before:rounded">
+                <div className="relative w-3/5 justify-evenly pl-4 ml-4 flex items-center gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-red-300 before:rounded">
                   <a
                     onClick={() =>
                       navigate(`/profile/${item.latestPost.user_id}`)

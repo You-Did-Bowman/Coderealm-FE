@@ -71,7 +71,7 @@ const General = ({ posts }) => {
 
   return (
     <article className="w-[90%] max-w-full mx-auto mt-10 p-6">
-      <h3 className="text-white border-b-4 py-4 border-accent font-vt323 text-[25px] font-normal">
+      <h3 className="text-white border-b-4 py-4  border-dashed border-red-300 font-vt323 text-[25px] font-normal">
         General
       </h3>
 
@@ -79,7 +79,7 @@ const General = ({ posts }) => {
         {userPosts.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-secondary/20 p-3 hover:rounded-md transition-colors"
+            className="flex flex-col sm:flex-row justify-between items-start last:border-none sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-green-700 p-3 hover:rounded-md transition-colors"
             role="button"
             
           >
@@ -104,7 +104,7 @@ const General = ({ posts }) => {
               </div>
 
               {item.postsLength > 0 && (
-                <div className=" relative w-3/5 pl-4 ml-4 flex items-center justify-evenly gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-secondary before:rounded">
+                <div className=" relative w-3/5 pl-4 ml-4 flex items-center justify-evenly gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-red-300 before:rounded">
                   <a
                     onClick={() =>
                       navigate(`/profile/${item.latestPost.user_id}`)
@@ -117,7 +117,7 @@ const General = ({ posts }) => {
                     />
                   </a>
 
-                  <div className=" flex w-2/5 overflow-hidden flex-col items-start text-[11px] max-w-[100px] ">
+                  <div className=" flex w-3/5 overflow-hidden flex-col items-start text-[11px] max-w-[100px] ">
                     <p className="overflow-hidden text-ellipsis whitespace-nowrap w-full block text-left">
                       From:
                     </p>

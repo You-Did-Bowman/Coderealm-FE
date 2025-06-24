@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const CreatePost = ( {setNewPost}) => {
+const CreatePost = ( { fetchingData,setNewPost}) => {
 
   const [title, setTitle] = useState("");
   const [community, setCommunity] = useState("");
@@ -42,6 +42,7 @@ const CreatePost = ( {setNewPost}) => {
       setCommunity("");
       setTextValue("");
       setMessage("Post created successfully!");
+      fetchingData();
     setTimeout(() => {
      
       setNewPost(false)
@@ -55,12 +56,12 @@ const CreatePost = ( {setNewPost}) => {
   return (
     <div className="min-h-screen w-full  z-10 top-0 left-0 fixed bg-[#0f0f1c] flex items-center justify-center px-4 py-10">
        
-      <section className="w-full max-w-3xl p-6 bg-primary rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+      <section className="w-full max-w-3xl p-6 bg-gradient-to-r from-[#1F404D] via-[#237A53] to-[#718575] rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
       <button    onClick={() => {
  
     setNewPost(false);
   }} className="float-right w-[25px] font-bold text-white text-xl hover:text-red-500"  role="close">X</button>
-        <h2 className="text-secondary text-3xl font-vt323 mb-6 border-b-2 border-secondary pb-2">
+        <h2 className="text-white text-3xl font-vt323 mb-6 border-b-2 border-secondary pb-2">
           Create New Post
         </h2>
 
@@ -70,7 +71,7 @@ const CreatePost = ( {setNewPost}) => {
             <label className="block text-white text-sm mb-2">Title</label>
             <input
               type="text"
-              className="w-full p-3 rounded-md bg-[#1e1e2f] text-white border border-secondary placeholder:text-secondary focus:outline-none"
+              className="w-full p-3 rounded-md bg-[#1e1e2f] text-white border border-none  placeholder:text-red-300 focus:outline-none"
               placeholder="Post title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -82,7 +83,7 @@ const CreatePost = ( {setNewPost}) => {
           <div>
             <label className="block text-white text-sm mb-2">Community</label>
             <select
-              className="w-full p-3 rounded-md bg-[#1e1e2f] text-white border border-secondary focus:outline-none"
+              className="w-full p-3 rounded-md bg-[#1e1e2f] text-red-300 border border-none  focus:outline-none"
               value={community}
               onChange={(e) => setCommunity(e.target.value)}
               required
@@ -102,7 +103,7 @@ const CreatePost = ( {setNewPost}) => {
           <div>
             <label className="block text-white text-sm mb-2">Your Post</label>
             <textarea
-              className="w-full p-4 h-64 rounded-md bg-[#1e1e2f] text-white border border-secondary placeholder:text-secondary focus:outline-none resize-none"
+              className="w-full p-4 h-64 rounded-md bg-[#1e1e2f] text-white border border-none placeholder:text-red-300 focus:outline-none resize-none"
               placeholder="Write your post here..."
               onChange={(e) => setTextValue(e.target.value)}
               value={textValue}
