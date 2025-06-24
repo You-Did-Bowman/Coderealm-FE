@@ -10,7 +10,10 @@
   top: 0;
   left: 0;
 
-  .g1 {
+  .gradient-container {
+    
+    position: relative;
+    .g1 {
     @include bg-circle;
     top: 100px;
     left: -300px;
@@ -18,23 +21,31 @@
 
   .g2 {
     @include bg-circle;
-
+    
     top: 400px;
     right: -150px;
   }
 
   .g3 {
     @include bg-circle;
-
-    top: 1200px;
-    right: 800px;
+    
+    top: 1100px;
+    left: 200px;
   }
+  
+  .g4 {
+    @include bg-circle;
+    
+    top: 2000px;
+    right: 250px;
+    overflow: visible;
+  }
+}
 }
 
 .lpuHeaderWrapper {
   display: flex;
   justify-content: space-around;
-  z-index: 2;
   gap: 2em;
 
   margin: 2em auto;
@@ -46,9 +57,8 @@
     position: relative;
     width: 30%;
     min-height: 500px;
-    background-color: $bangladeshGreen;
+    background-color: $darkGreen;
     border-radius: 20px;
-    z-index: 2;
     align-self: center;
 
     .lpuProfileWrapper {
@@ -58,7 +68,6 @@
       width: 50%;
 
       .lpuProfileContainer {
-
         img {
           width: 100px;
           border-radius: 50px;
@@ -73,20 +82,22 @@
     }
 
     .progressWrapper {
-      background: linear-gradient(0deg, $bangladeshGreen 0%, $darkGreen 100%);
+      background: linear-gradient(0deg, $darkGreen 0%, #000707 100%);
       border-radius: 50% 50% 0% 0% / 13% 12% 25% 25%;
       height: 50%;
-
 
       .progressContainer {
         width: 50%;
         margin: 2em auto;
         padding: 2em 0;
 
-        
+        div {
+          margin: .5em 0;
+        }
+
         h3 {
           @extend %h3Profile;
-          text-align: center;;
+          text-align: center;
         }
 
         .lpuProgressFlex {
@@ -110,21 +121,22 @@
 
     width: 400px;
     height: 600px;
-
-    z-index: 2;
   }
 }
 
 .lpuExploreBar {
-  background: linear-gradient(220deg, $mountainMeadow 0%, $richBlack 100%);
+  background: linear-gradient(220deg, #024636 0%, $richBlack 70%);
+  border: 1px solid $darkGreen;
   color: white;
   min-height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  z-index: 10;
   margin: 4em 0;
+  z-index: 10;
+  position: relative;
+  z-index: 2;
 
   .lpuExploreH2 {
     @extend %h2Profile;
@@ -132,4 +144,29 @@
   }
 }
 
+.lpuInviteWrapper {
+  border: 2px solid $stone;
+  border-radius: 0% 10% 0% 10% / 40% 30% 40% 30%;
+  width: 50%;
+  background: $richBlack;
+  margin: 4em auto;
+  position: relative;
+  z-index: 1;
 
+  .lpuInviteContainer {
+    width: 50%;
+    margin: 2em auto;
+    text-align: center;
+    position: relative;
+
+    h3 {
+      @extend %h2Profile;
+
+      margin-bottom: 0.5em;
+    }
+
+    input {
+      margin: 2em 1em;
+    }
+  }
+}

@@ -2,22 +2,54 @@
 @import "../../style/mixins.scss";
 
 body {
-//background-color: $bg;  
-
-  .profileHeader {
+  .gradient-bg {
     width: 100%;
-    height: 200vh;
-    position: absolute;
-    background: linear-gradient(0deg, $bg 50%, #0b022596 100%), url("../../assets/images/profile_bg_pixelated.jpg");
-    background-size: 100% ;
-    background-repeat: no-repeat;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: $bg;
+    top: 0;
+    left: 0;
+  
+    .g1 {
+      @include bg-circle;
+      top: 100px;
+      left: -300px;
+    }
+  
+    .g2 {
+      @include bg-circle;
+  
+      top: 400px;
+      right: -150px;
+    }
+  
+    .g3 {
+      @include bg-circle;
+  
+      top: 1100px;
+      left: 200px;
+    }
+  
+    .g4 {
+      @include bg-circle;
+  
+      top: 2000px;
+      right: 250px;
+      overflow: visible;
+    }
+  } 
+
+  .profileContentWrapper {
+    position: relative;
+    z-index: 2;
   }
 
   .profileWrapper {
     width: 60%;
     padding: 2em;
     border-radius: 50px;
-    backdrop-filter: blur(15px);
+    background-color: $richBlack;
     border: 1px solid rgba(255, 255, 255, 0.075);
 
     display: grid;
@@ -50,6 +82,7 @@ body {
     img {
       width: 300px;
       border-radius: 150px;
+      box-shadow: 0px 0px 25px 2px $pistachio;
     }
 
     div {
