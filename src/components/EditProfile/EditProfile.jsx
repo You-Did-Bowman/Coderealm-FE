@@ -26,15 +26,20 @@ function EditProfile() {
 
     //JB: instead try to fetch the api to update the user (postman can do this but the stupid browser is stupid)
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/edit`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}/edit`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        }
+      );
+
+      alert("Successfully updated!")
 
       if (!res.ok) {
         throw new Error("Failed to update user");
@@ -64,6 +69,8 @@ function EditProfile() {
         }
       );
 
+      alert("Successfully updated!")
+
       if (!res.ok) {
         throw new Error("Failed to upload file!");
       }
@@ -80,69 +87,79 @@ function EditProfile() {
 
   return (
     <>
-      <div className="editWrapper">
-        <form encType="multipart/form-data" className="formUpload">
-          <h2>Upload an avatar: </h2>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-          <button onClick={handleUpload} style={borderButton}>
-            Upload
-          </button>
-        </form>
+      <div className="gradient-bg">
+        <div className="gradient-container">
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="profileContentWrapper"></div>
 
-        <form
-          action=""
-          method="put"
-          onSubmit={handleSubmit}
-          className="infoForm"
-        >
-          <h2>Edit informations about you:</h2>
-          <div className="inputLocation">
-            <label>Location</label>
-            <input
-              type="text"
-              name="location"
-              onChange={handleChange}
-              value={formData.location || ""}
-              placeholder="Your location"
-            />
-          </div>
-          <div className="inputInfo">
-            <label>Write something about you: </label>
-            <textarea
-              name="info"
-              id="info"
-              onChange={handleChange}
-              value={formData.info || ""}
-              placeholder="Tell us something about you ..."
-            ></textarea>
-          </div>
-          <div className="inputSocial">
-            <label>Social:</label>
-            <input
-              type="text"
-              name="social"
-              onChange={handleChange}
-              value={formData.social || ""}
-              placeholder="Instagram, Github, etc."
-            />
-          </div>
-          <button type="submit" style={borderButton}>
-            Save changes
-          </button>
-        </form>
+          <div className="editWrapper">
+            <form encType="multipart/form-data" className="formUpload">
+              <h2>Upload an avatar: </h2>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+              <button onClick={handleUpload} style={borderButton}>
+                Upload
+              </button>
+            </form>
 
-        <button
-          onClick={() => navigate("/users/reset-password/:token")}
-          style={borderButton}
-          className="buttonPassword"
-        >
-          Reset Password
-        </button>
+            <form
+              action=""
+              method="put"
+              onSubmit={handleSubmit}
+              className="infoForm"
+            >
+              <h2>Edit informations about you:</h2>
+              <div className="inputLocation">
+                <label>Location</label>
+                <input
+                  type="text"
+                  name="location"
+                  onChange={handleChange}
+                  value={formData.location || ""}
+                  placeholder="Your location"
+                />
+              </div>
+              <div className="inputInfo">
+                <label>Write something about you: </label>
+                <textarea
+                  name="info"
+                  id="info"
+                  onChange={handleChange}
+                  value={formData.info || ""}
+                  placeholder="Tell us something about you ..."
+                ></textarea>
+              </div>
+              <div className="inputSocial">
+                <label>Social:</label>
+                <input
+                  type="text"
+                  name="social"
+                  onChange={handleChange}
+                  value={formData.social || ""}
+                  placeholder="Instagram, Github, etc."
+                />
+              </div>
+              <button type="submit" style={borderButton}>
+                Save changes
+              </button>
+            </form>
+
+            <button
+              onClick={() => navigate("/users/reset-password/:token")}
+              style={borderButton}
+              className="buttonPassword"
+            >
+              Reset Password
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

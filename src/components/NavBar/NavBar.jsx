@@ -56,7 +56,7 @@ const NavBar = () => {
             "forumia",
             "playground",
             "Chatbot",
-            //"bugadune",
+            "bugadune",
             //"csscrypta",
             //"towerofapion",
           ].map((path) => (
@@ -66,7 +66,7 @@ const NavBar = () => {
           ))}
         </div>
 
-        <div className="profilPic">
+        <div className="profilPic cursor-pointer">
           <img
             onClick={() => setIsOpen(!isOpen)}
             src={avatar || placeholderAvatar}
@@ -90,7 +90,7 @@ const NavBar = () => {
                   navigate(`/profile/${userId}`);
                 }}
               >
-                <NavLink to={`/profile/${userId}`}>Profil</NavLink>
+                <NavLink to={`/profile/${userId}`}>Profile</NavLink>
               </motion.li>
 
               <motion.li

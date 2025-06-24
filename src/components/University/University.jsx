@@ -3,10 +3,11 @@ import Editor from "@monaco-editor/react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import universityImage from "../../assets/images/university.png";
 import { toast } from "react-toastify";
-
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeRaw from "rehype-raw";
+import "./_university.scss"; // Import the SCSS file
 
 /* ─────────────── ChatBot pane ─────────────── */
 function ChatBot({ isOpen, onClose, setWidth }) {
@@ -55,19 +56,16 @@ function ChatBot({ isOpen, onClose, setWidth }) {
 
   return (
     <aside
-      className={`
-        fixed right-0 top-0 h-full bg-primary border-l border-accent
-        transform transition-transform duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "translate-x-full"}
-        z-50 flex flex-col
-      `}
+      className={`chatbot fixed right-0 top-0 h-full transform transition-transform duration-300 ease-in-out ${
+        isOpen ? "translate-x-0" : "translate-x-full"
+      } z-50 flex flex-col`}
       style={{ width: "500px" }}
     >
-      <header className="p-3 border-b border-secondary text-secondary font-bold flex justify-between items-center">
+      <header className="chatbot-header p-3 border-b flex justify-between items-center">
         <span>J.A.D.A.</span>
         <button
           onClick={onClose}
-          className="text-secondary text-m hover:text-white px-2 py-1"
+          className="text-secondary hover:text-white px-2 py-1"
           aria-label="Close chat"
         >
           Close
@@ -75,13 +73,13 @@ function ChatBot({ isOpen, onClose, setWidth }) {
       </header>
 
       {/* messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
+      <div className="messages flex-1 overflow-y-auto px-4 py-2 space-y-2">
         {messages.map((m, i) => (
           <div key={i} className="text-xl ">
             {m.from === "user" ? (
               <p className="text-right text-white">{m.text}</p>
             ) : (
-              <div className="prose prose-invert text-left text-gray-300 max-w-none">
+              <div className="prose prose-invert text-left max-w-none">
                 <ReactMarkdown
                   components={{
                     code({ inline, className, children, ...props }) {
@@ -116,12 +114,12 @@ function ChatBot({ isOpen, onClose, setWidth }) {
       </div>
 
       {/* input bar */}
-      <div className="p-2 border-t border-accent flex gap-2">
+      <div className="input-bar p-2 border-t flex gap-2">
         <input
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          className="flex-1 bg-black text-white text-sm px-2 py-1 rounded border border-accent focus:outline-none"
+          className="flex-1 bg-primary text-white text-sm px-2 py-1 rounded border border-accent focus:outline-none"
           placeholder="Type your question…"
         />
       </div>
@@ -154,51 +152,15 @@ function ChatBot({ isOpen, onClose, setWidth }) {
   );
 }
 /* ─────────── end ChatBot pane ─────────── */
-// NEW: Add these helper functions for editor enhancements
+
+// Helper functions remain the same
 function registerHtmlSnippets(monaco) {
   monaco.languages.registerCompletionItemProvider("html", {
     provideCompletionItems: () => {
       const tags = [
-        "div",
-        "p",
-        "h1",
-        "h2",
-        "span",
-        "a",
-        "img",
-        "ul",
-        "ol",
-        "li",
-        "button",
-        "input",
-        "form",
-        "section",
-        "article",
-        "footer",
-        "header",
-        "nav",
-        "main",
-        "link",
-        "div",
-        "p",
-        "h1",
-        "h2",
-        "span",
-        "a",
-        "img",
-        "ul",
-        "ol",
-        "li",
-        "button",
-        "input",
-        "form",
-        "section",
-        "article",
-        "footer",
-        "header",
-        "nav",
-        "main",
-        "link",
+        "div", "p", "h1", "h2", "span", "a", "img", "ul", "ol", "li", 
+        "button", "input", "form", "section", "article", "footer", 
+        "header", "nav", "main", "link"
       ];
       const suggestions = tags.map((tag) => ({
         label: tag,
@@ -216,7 +178,6 @@ function registerHtmlSnippets(monaco) {
   });
 }
 
-// NEW: Enable ALT+Z word wrap toggle
 function enableAltZToggle(editor, monaco) {
   editor.addCommand(monaco.KeyMod.Alt | monaco.KeyCode.KeyZ, () => {
     const current = editor.getRawOptions().wordWrap;
@@ -227,11 +188,10 @@ function enableAltZToggle(editor, monaco) {
 const STORAGE_KEY = "universityCode";
 
 export default function University() {
-  /* ─────────────── ChatBot pane ─────────────── */
   const [botOpen, setBotOpen] = useState(false);
   const handleBotClose = () => setBotOpen(false);
   const [botWidth, setBotWidth] = useState(500);
-  /* ────────────end ChatBot pane ─────────────── */
+  
   const location = useLocation();
   const [currentCourseId, setCurrentCourseId] = useState(null);
   const { exerciseId } = useParams();
@@ -239,7 +199,7 @@ export default function University() {
 
   const [code, setCode] = useState("");
   const [exercise, setExercise] = useState(null);
-  const [lessonContent, setLessonContent] = useState(null); // NEW: Lesson content state
+  const [lessonContent, setLessonContent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -248,39 +208,31 @@ export default function University() {
   const [showPreview, setShowPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState("");
 
-  // Helper to get file extension for display - MOVED HERE!
   const getLanguageExtension = (language) => {
     switch (language) {
-      case "javascript":
-        return "js";
-      case "html":
-        return "html";
-      case "css":
-        return "css";
-      default:
-        return "txt"; // Fallback for unknown languages or if language is null/undefined
+      case "javascript": return "js";
+      case "html": return "html";
+      case "css": return "css";
+      default: return "txt";
     }
   };
 
-  // NEW: Auto-save to localStorage
   useEffect(() => {
     localStorage.setItem(`${STORAGE_KEY}_${exerciseId}`, code);
   }, [code, exerciseId]);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchExerciseAndLesson = async () => {
       try {
         setIsLoading(true);
-        
-        // Fetch exercise
+
         const exerciseRes = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/courses/exercises/${exerciseId}`
         );
         if (!exerciseRes.ok) throw new Error("Failed to fetch exercise");
         const exerciseData = await exerciseRes.json();
         setExercise(exerciseData);
-        
-        // Fetch lesson content
+
         const lessonRes = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exerciseData.lesson_id}`
         );
@@ -288,7 +240,6 @@ export default function University() {
         const lessonData = await lessonRes.json();
         setLessonContent(lessonData);
 
-        // Check if exercise is already completed
         const progressRes = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exerciseData.lesson_id}/progress`,
           { credentials: "include" }
@@ -296,9 +247,7 @@ export default function University() {
 
         if (progressRes.ok) {
           const progress = await progressRes.json();
-          const currentEx = progress.find(
-            (ex) => ex.id === parseInt(exerciseId)
-          );
+          const currentEx = progress.find((ex) => ex.id === parseInt(exerciseId));
           if (currentEx?.completed) {
             setIsCompleted(true);
           }
@@ -319,8 +268,6 @@ export default function University() {
 
     fetchExerciseAndLesson();
   }, [exerciseId, navigate, location.state]);
-
- 
 
   const run = async () => {
     try {
@@ -350,40 +297,29 @@ export default function University() {
 
       const output = result.tests
         .map((test, i) => {
-          let testStatus = `#${i + 1}: ${
-            test.description || test.test_type
-          } - ${test.passed ? "✅ Passed" : "❌ Failed"}`;
+          let testStatus = `#${i + 1}: ${test.description || test.test_type} - ${
+            test.passed ? "✅ Passed" : "❌ Failed"
+          }`;
           let details = `  Status: ${test.status_description || "N/A"}\n`;
 
           if (test.passed) {
             details += `  Expected: ${
-              test.expected_output
-                ? JSON.stringify(test.expected_output.trim())
-                : "None"
+              test.expected_output ? JSON.stringify(test.expected_output.trim()) : "None"
             }\n`;
-            details += `  Actual: ${
-              test.actual ? JSON.stringify(test.actual.trim()) : "None"
-            }\n`;
+            details += `  Actual: ${test.actual ? JSON.stringify(test.actual.trim()) : "None"}\n`;
           } else {
-            if (test.error) {
-              details += `  Error: ${test.error}\n`;
-            }
+            if (test.error) details += `  Error: ${test.error}\n`;
             if (test.expected_output) {
-              details += `  Expected Output: ${JSON.stringify(
-                test.expected_output.trim()
-              )}\n`;
+              details += `  Expected Output: ${JSON.stringify(test.expected_output.trim())}\n`;
             }
             if (test.actual && test.actual.trim() !== "") {
-              details += `  Actual Output: ${JSON.stringify(
-                test.actual.trim()
-              )}\n`;
+              details += `  Actual Output: ${JSON.stringify(test.actual.trim())}\n`;
             }
           }
 
           if (exercise?.language === "javascript") {
             if (test.time !== undefined) details += `  Time: ${test.time}s\n`;
-            if (test.memory !== undefined)
-              details += `  Memory: ${test.memory}KB\n`;
+            if (test.memory !== undefined) details += `  Memory: ${test.memory}KB\n`;
           }
 
           return testStatus + "\n" + details;
@@ -402,9 +338,7 @@ export default function University() {
       const allTestsPassed = result.tests.every((test) => test.passed);
       if (allTestsPassed) {
         setIsCompleted(true);
-        toast.success(
-          `✅ All tests passed! Score: ${result.score}% +${exercise.xp_reward} XP`
-        );
+        toast.success(`✅ All tests passed! Score: ${result.score}% +${exercise.xp_reward} XP`);
       } else {
         setIsCompleted(false);
         toast.info(`⚠️ Some tests failed. Score: ${result.score}%`);
@@ -417,71 +351,46 @@ export default function University() {
       setIsEvaluating(false);
     }
   };
- const handleComplete = async () => {
-  const allTestsPassed = testResults.every(test => test.passed);
-  if (!allTestsPassed) {
-    toast.error("❗ Please pass all tests before completing.");
-    return;
-  }
 
-  try {
-    // Mark exercise as complete
-    const completeRes = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/courses/exercises/${exerciseId}/complete`,
-      { method: "POST", credentials: "include" }
-    );
-    if (!completeRes.ok) throw new Error("Failed to mark exercise complete");
-
-    // Get next lesson ID
-    const nextLessonRes = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exercise.lesson_id}/next`,
-      { credentials: "include" }
-    );
-    
-    let nextLessonId = null;
-    if (nextLessonRes.ok) {
-      const data = await nextLessonRes.json();
-      // Ensure we get the ID value, not an object
-      nextLessonId = data.nextLessonId?.id || data.nextLessonId;
+  const handleComplete = async () => {
+    const allTestsPassed = testResults.every((test) => test.passed);
+    if (!allTestsPassed) {
+      toast.error("❗ Please pass all tests before completing.");
+      return;
     }
 
+    try {
+      const completeRes = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/courses/exercises/${exerciseId}/complete`,
+        { method: "POST", credentials: "include" }
+      );
+      if (!completeRes.ok) throw new Error("Failed to mark exercise complete");
 
-    // Navigate back with next lesson state
-    navigate("/university", { 
-      state: { 
-        activeCourse: currentCourseId || exercise.course_id,
-        activeLesson: nextLessonId 
-      } 
-    });
+      const nextLessonRes = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exercise.lesson_id}/next`,
+        { credentials: "include" }
+      );
 
-    toast.success(`✅ Exercise completed! +${exercise.xp_reward} XP`);
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
+      let nextLessonId = null;
+      if (nextLessonRes.ok) {
+        const data = await nextLessonRes.json();
+        nextLessonId = data.nextLessonId?.id || data.nextLessonId;
+      }
 
-  // const handleNextExercise = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_BACKEND_URL}api/courses/exercises/${exerciseId}/next`,
-  //       { credentials: "include" }
-  //     );
+      navigate("/university", {
+        state: {
+          activeCourse: currentCourseId || exercise.course_id,
+          activeLesson: nextLessonId,
+        },
+      });
 
-  //     if (response.ok) {
-  //       const { nextExerciseId } = await response.json();
-  //       if (nextExerciseId) {
-  //         navigate(`/university/${nextExerciseId}`);
-  //       } else {
-  //         toast.info("🎉 No more exercises in this lesson!");
-  //         navigate("/university");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error getting next exercise:", error);
-  //     toast.error("Failed to get next exercise");
-  //   }
-  // };
- if (isLoading) {
+      toast.success(`✅ Exercise completed! +${exercise.xp_reward} XP`);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background text-white">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
@@ -498,8 +407,7 @@ export default function University() {
   }
 
   return (
-    <div
-      className="relative flex flex-col h-screen bg-background text-white transition-all duration-100 ease-in-out"
+    <div className="university-page relative flex flex-col h-screen text-white transition-all duration-100 ease-in-out"
       style={{ paddingRight: botOpen ? `${botWidth}px` : 0 }}
     >
       {/* Header */}
@@ -507,29 +415,39 @@ export default function University() {
         className="relative w-full h-48 bg-cover bg-center"
         style={{ backgroundImage: `url(${universityImage})` }}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
-          <h1 className="text-5xl text-secondary font-bold">
+        <div className="header-overlay absolute inset-0 flex flex-col items-center justify-center">
+          <h1 className="text-5xl font-bold">
             UNIVERSITY OF TERMINALIA
           </h1>
-          
         </div>
       </header>
 
       {/* Main content */}
-      <div className="flex flex-1 overflow-hidden p-2 rounded-md border border-accent m-4">
+      <div className="main-content flex flex-1 overflow-hidden p-2 rounded-md border m-4">
         {/* Left - Content */}
         <div className="w-1/2 p-4 space-y-6 overflow-y-auto">
           {/* Lesson Content */}
-          <div className="bg-gray-900/50 p-4 rounded-lg border border-accent">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl text-accent">{lessonContent.title}</h2>
-              <span className="text-sm text-gray-400">
+          <div className="content-panel p-6 rounded-lg border">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">
+                {lessonContent.title}
+              </h2>
+              <span className="badge-completed text-sm px-3 py-1 rounded-full">
                 {exercise.xp_reward} XP
               </span>
             </div>
-            
-            <div className="prose prose-invert text-gray-300 max-w-none">
+
+            <div className="prose prose-invert prose-lg max-w-none 
+        prose-p:my-6 prose-p:leading-8
+        prose-headings:mt-10 prose-headings:mb-6 prose-headings:leading-10
+        prose-ul:my-6 prose-ol:my-6
+        prose-li:my-3 prose-li:leading-7
+        prose-strong:text-accent/80
+        prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-secondary
+        prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic"
+            >
               <ReactMarkdown
+                rehypePlugins={[rehypeRaw]}
                 components={{
                   code({ inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
@@ -538,80 +456,71 @@ export default function University() {
                         style={oneDark}
                         language={match[1]}
                         PreTag="div"
+                        className="rounded-lg my-4 p-4 leading-6"
                         {...props}
                       >
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>
                     ) : (
                       <code
-                        className="bg-gray-800 text-secondary px-1 rounded"
+                        className="bg-gray-800 text-secondary px-1.5 py-0.5 rounded leading-6"
                         {...props}
                       >
                         {children}
                       </code>
                     );
                   },
+                  p: ({ node, children }) => (
+                    <p className="whitespace-pre-line my-6 leading-8">
+                      {children}
+                    </p>
+                  ),
+                  li: ({ node, children }) => (
+                    <li className="whitespace-pre-line my-3 leading-7">
+                      {children}
+                    </li>
+                  ),
                 }}
               >
                 {lessonContent.content}
               </ReactMarkdown>
             </div>
-            
+
             {lessonContent.example && (
-              <div className="mt-4">
-                <h3 className="text-accent text-xl mb-2">Example</h3>
-                <div className="prose prose-invert text-gray-300 max-w-none">
-                  <ReactMarkdown
-                    components={{
-                      code({ inline, className, children, ...props }) {
-                        const match = /language-(\w+)/.exec(className || "");
-                        return !inline && match ? (
-                          <SyntaxHighlighter
-                            style={oneDark}
-                            language={match[1]}
-                            PreTag="div"
-                            {...props}
-                          >
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
-                        ) : (
-                          <code
-                            className="bg-gray-800 text-secondary px-1 rounded"
-                            {...props}
-                          >
-                            {children}
-                          </code>
-                        );
-                      },
-                    }}
+              <div className="mt-10">
+                <h3 className="text-accent text-xl font-semibold mb-6">
+                  Example
+                </h3>
+                <div className="bg-gray-800/30 p-6 rounded-lg">
+                  <SyntaxHighlighter
+                    style={oneDark}
+                    language={exercise.language}
+                    PreTag="div"
+                    className="rounded-lg my-4 p-4 leading-6"
                   >
-                    {`\`\`\`${exercise.language}\n${lessonContent.example}\n\`\`\``}
-                  </ReactMarkdown>
+                    {lessonContent.example}
+                  </SyntaxHighlighter>
                 </div>
               </div>
             )}
           </div>
-
+          
           {/* Exercise Description */}
-          <div className="bg-gray-900/50 p-4 rounded-lg border border-accent">
+          <div className="content-panel p-4 rounded-lg border">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl text-accent">{exercise.title}</h2>
               <div className="flex items-center space-x-2">
                 <span
                   className={`px-2 py-1 text-sm rounded-full ${
-                    exercise.difficulty === "Easy"
-                      ? "bg-green-500"
-                      : exercise.difficulty === "Medium"
-                      ? "bg-yellow-500"
-                      : exercise.difficulty === "Hard"
-                      ? "bg-red-500"
-                      : "bg-gray-500"
+                    exercise.difficulty === "Easy" ? "difficulty-easy" :
+                    exercise.difficulty === "Medium" ? "difficulty-medium" :
+                    exercise.difficulty === "Hard" ? "difficulty-hard" : "bg-gray-500"
                   }`}
                 >
                   {exercise.difficulty}
                 </span>
                 {isCompleted && (
-                  <span className="px-2 py-1 text-xs bg-secondary text-black rounded-full">
+                  <span className="badge-completed px-2 py-1 text-xs rounded-full">
                     +{exercise.xp_reward} XP
                   </span>
                 )}
@@ -659,33 +568,31 @@ export default function University() {
         </div>
 
         {/* Right - Code & Terminal */}
-        <div className="w-1/2 flex flex-col border-l border-accent">
+        <div className="editor-container w-1/2 flex flex-col">
           {/* Editor Header */}
-          <div className="flex justify-between items-center px-4 py-2 border-b border-accent">
+          <div className="editor-header flex justify-between items-center px-4 py-2 border-b">
             <h3 className="text-secondary text-xl">
               Code.{getLanguageExtension(exercise.language)}
             </h3>
             <div className="space-x-2">
               <button
                 onClick={run}
-                className="bg-secondary text-black px-3 py-1 rounded hover:bg-secondaryHover disabled:bg-gray-600 disabled:cursor-not-allowed"
+                className="button-run px-3 py-1 rounded disabled:bg-gray-600 disabled:cursor-not-allowed"
                 disabled={isEvaluating}
               >
                 {isEvaluating ? "RUNNING..." : "RUN"}
               </button>
-              {(exercise.language === "html" ||
-                exercise.language === "css") && (
+              {(exercise.language === "html" || exercise.language === "css") && (
                 <button
                   onClick={() => setShowPreview((p) => !p)}
-                  className="bg-background text-white px-3 py-1 rounded border border-accent hover:bg-accentHover"
+                  className="button-secondary px-3 py-1 rounded border"
                 >
                   {showPreview ? "Hide Preview" : "Preview"}
                 </button>
               )}
-
               <button
                 onClick={() => setBotOpen((o) => !o)}
-                className="bg-primary text-white px-3 py-1 rounded border border-accent hover:bg-secondaryHover"
+                className="button-secondary px-3 py-1 rounded border"
               >
                 {botOpen ? "Close Bot" : "Ask Bot"}
               </button>
@@ -787,11 +694,11 @@ export default function University() {
               }}
             />
           </div>
-          
+
           {/* Live Preview */}
           {(exercise.language === "html" || exercise.language === "css") &&
             showPreview && (
-              <div className="h-56 border-t border-accent bg-white overflow-auto">
+              <div className="preview-panel h-56 border-t bg-white overflow-auto">
                 <h4 className="text-black font-bold p-2 bg-secondary">
                   Live Preview
                 </h4>
@@ -805,17 +712,17 @@ export default function University() {
             )}
 
           {/* Terminal */}
-          <div className="h-35 border-t border-accent p-2 bg-black text-white text-sm overflow-auto">
-            <h4 className="mb-1 text-accent">Terminal</h4>
-            <pre className="whitespace-pre-wrap text-sm text-secondary">
+          <div className="terminal-panel h-35 border-t p-2 text-sm overflow-auto">
+            <h4 className="mb-1">Terminal</h4>
+            <pre className="whitespace-pre-wrap text-sm">
               {terminalOutput || "Click RUN to evaluate your code."}
             </pre>
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between items-center p-4 border-t border-accent">
+          <div className="navigation-buttons flex justify-between items-center p-4 border-t">
             <button
-              className="px-4 py-1 bg-primary border border-accent rounded hover:bg-secondaryHover"
+              className="button-secondary px-4 py-1 border rounded"
               onClick={() => navigate("/university")}
             >
               Back
@@ -824,7 +731,7 @@ export default function University() {
               onClick={handleComplete}
               className={`px-4 py-1 rounded ${
                 isCompleted
-                  ? "bg-green-500 text-white hover:bg-green-600"
+                  ? "button-run hover:bg-secondaryHover"
                   : "bg-gray-600 text-gray-400 cursor-not-allowed"
               }`}
               disabled={!isCompleted}
