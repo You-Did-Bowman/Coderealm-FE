@@ -64,6 +64,7 @@ const UniversityIntro = () => {
     if (!activeCourse || !user?.id) return;
    const currentToken = token || localStorage.getItem("token");
     const fetchCourseExercises = async () => {
+      const currentToken = token || localStorage.getItem("token");
       try {
         setLoadingStatus((prev) => ({ ...prev, exercises: true }));
         const response = await fetch(

@@ -132,7 +132,7 @@ function ProfilNav() {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `${VITE_BACKEN_URL}/posts/userPosts/${profileId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/posts/userPosts/${profileId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ function ProfilNav() {
     const fetchProfileAvatar = async () => {
       try {
         const response = await fetch(
-          `${VITE_BACKEN_URL}/api/user/${profileId}/getProfilPic`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/${profileId}/getProfilPic`,
           {
             method: "GET",
             headers: {
