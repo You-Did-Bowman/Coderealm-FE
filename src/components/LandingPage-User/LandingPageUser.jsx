@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import Frame3 from "../../assets/images/Frame3.png";
 import LandingPageUserCards from "./LandingPageUserCards";
-import LandingPageUserCardsImage from "../../assets/images/LandingPageUserBackGround.jpg";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../../contexts/userIdContext";
 import placeholderAvatar from "../../assets/images/placeholder_Avatar.jpg";
+import "./_landingPageUser.scss";
 
 const LandingPageUser = () => {
   const {
@@ -35,13 +34,16 @@ const LandingPageUser = () => {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/progress`, {
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/progress`,
+        {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -109,7 +111,7 @@ const LandingPageUser = () => {
       }
 
       const res = await fetch(
-       `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}/getProfilPic`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${id}/getProfilPic`,
         {
           method: "GET",
           headers: {
@@ -157,14 +159,17 @@ const LandingPageUser = () => {
         return;
       }
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/sendInviteMail` , {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/users/sendInviteMail`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       console.log(("FE - res:", res));
 
@@ -179,121 +184,108 @@ const LandingPageUser = () => {
   };
 
   return (
-    <section className=" gap-10 flex bg-background flex-col  justify-center items-center  ">
-      {/* Background Image with Overlay */}
-       <div className="bg-white  xl:h-[50rem] relative w-full inset-0 z-0">
-        <img
-          className="h-full w-full"
-          src={LandingPageUserCardsImage}
-          alt=""
-        />
-        <img
-          className="  z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/12"
-          src={Frame3}
-          alt="CodeRealm"
-          loading="lazy"
-        />
+    <div className="gradient-bg">
+      <div className="gradient-container">
+        <div className="g1"></div>
+        <div className="g2"></div>
+        <div className="g3"></div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-background/95"></div>
-      </div>
+        {/* JB: Stats */}
+        <div className="lpuHeaderWrapper">
+          {/* JB: User stats overview */}
+          <div className="statsWrapper">
+            {/*  JB: Profile stats */}
+            <article className="lpuProfileWrapper">
+              <div className="lpuProfileContainer">
+                <img
+                  loading="lazy"
+                  src={avatar || placeholderAvatar}
+                  alt="userImage"
+                />
+                <h2 className="lpuUsername">
+                  {userData?.username || "Loading..."}
+                </h2>
+                <p>Level {userData?.level || 1}</p>
+              </div>
+            </article>
 
-      {/* JB: User stats overview */}
-      <div className="z-10 container w-full xl:absolute bottom-[0rem]  text-white font-semibold md:gap-4 gap-5 xl:gap-0 flex flex-col md:flex-row justify-between ">
-        <article className="shadow-[0_8px_30px_rgba(255,255,255,0.4)] bg-background flex justify-center items-center border-2 border-accent rounded-md md:rounded-2xl w-full md:w-3/5 text-white text-center">
-          <div className="p-4">
-            <h1 className="text-xl mb-2">Your Progress</h1>
-            {userProgress ? (
-              <>
-                <p>
-                  Completed: {userProgress.completedExercises} /{" "}
-                  {userProgress.totalExercises}
-                </p>
-                {userProgress.nextExercise && (
-                  <p className="mt-2">
-                    Next: {userProgress.nextExercise.title}
-                  </p>
+            {/* JB: Progress stats */}
+            <article className="progressWrapper">
+              <div className="progressContainer">
+                <h3>Your Progress</h3>
+
+                <div className="lpuProgressFlex">
+                  <p>Badges:</p>
+                  <p> {userData?.badgesCount || 0}</p>
+                </div>
+
+                <div className="lpuProgressFlex">
+                  <p>XP: </p>
+                  <p> {userData?.xp || 0}</p>
+                </div>
+
+                <div className="lpuProgressFlex">
+                  <p>Rank: </p>
+                  <p> # {userData?.rank || "N/A"}</p>
+                </div>
+
+                {userProgress ? (
+                  <>
+                    <div className="lpuProgressFlex">
+                      <p>Completed:</p>{" "}
+                      <p>
+                        {" "}
+                        {userProgress.completedExercises} /{" "}
+                        {userProgress.totalExercises}
+                      </p>
+                    </div>
+                    <div className="lpuProgressFlex">
+                      <p> Next: </p>
+                      {userProgress.nextExercise && (
+                        <p>{userProgress.nextExercise.title}</p>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <p>Loading progress...</p>
                 )}
-              </>
-            ) : (
-              <p>Loading progress...</p>
-            )}
+              </div>
+            </article>
           </div>
-        </article>
-
-        <article className="bg-background border-2 border-accent rounded-md md:rounded-2xl py-14 md:w-2/5 xl:w-1/5 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
-          <div className="mb-5 flex items-center justify-around">
-            <img
-              className="w-14 h-14 rounded-full"
-              loading="lazy"
-              src={avatar || placeholderAvatar}
-              alt="userImage"
-            />
-            <p className="flex flex-col items-center">
-              {userData?.username || "Loading..."}
-              <span className="text-xs font-normal">
-                Level {userData?.level || 1}
-              </span>
-            </p>
-          </div>
-          <div className="mt-6 mb-4 flex items-center justify-around">
-            <p className="flex flex-col items-center">
-              Badges
-              <span className="text-xs font-normal">
-                {userData?.badgesCount || 0}
-              </span>
-            </p>
-            <p className="flex flex-col items-center">
-              XP
-              <span className="text-xs font-normal">{userData?.xp || 0}</span>
-            </p>
-          </div>
-          <p className="flex flex-col text-center items-center">
-            Rank
-            <span className="text-xs font-normal">
-              #{userData?.rank || "N/A"}
-            </span>
-          </p>
-        </article>
-      </div>
-
-      {/* JB: Heading Explore Coderealm */}
-      <h2 className="z-[10] xl:mt-[10rem]   w-full  container  font-bold text-2xl text-white  ">
-        Explore the{" "}
-        <span className=" text-4xl font-normal tracking-wider	 	 text-accent font-vt323 ">
-          REALM
-        </span>
-      </h2>
-
-      <LandingPageUserCards />
-
-      {/* JB: Invite friend section */}
-      <article className="border-accent rounded-2xl flex flex-col justify-center items-center p-8 bg-background shadow-lg">
-        <h3 className="font-bold text-2xl text-white mb-4">
-          Invite a{" "}
-          <span className="text-4xl font-normal  font-vt323 text-accent tracking-wider">
-            Friend
-          </span>
-        </h3>
-        <p className="text-lg text-white mb-6 text-center leading-relaxed max-w-lg">
-          Having fun with CODEREALM? Share the love with a friend (or two)!
-          Enter their email, and we'll send them a personal invite to join the
-          community.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md">
-          <input
-            type="email"
-            placeholder="Enter friend's email"
-            className="px-4 py-2 w-full sm:w-72 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent text-gray-800"
-            id="email"
-          />
-          <button
-            onClick={sendInvite}
-          >
-            Send Invite
-          </button>
+          <div className="lpuCave"></div>
         </div>
-      </article>
-    </section>
+
+        {/* JB: Heading Explore Coderealm */}
+        <div className="lpuExploreBar">
+          <h2 className="lpuExploreH2">
+            Explore the <span className=" ">REALM</span>
+          </h2>
+        </div>
+
+        <LandingPageUserCards />
+
+        {/* JB: Invite friend section */}
+        <div className="lpuInvite">
+          <h3>
+            Invite a <span>Friend</span>
+          </h3>
+          <p>
+            Having fun with CODEREALM? Share the love with a friend (or two)!
+            Enter their email, and we'll send them a personal invite to join the
+            community.
+          </p>
+          <div className="">
+            <input
+              type="email"
+              placeholder="Enter friend's email"
+              className="px-4 py-2 w-full sm:w-72 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent text-gray-800"
+              id="email"
+            />
+            <button onClick={sendInvite}>Send Invite</button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

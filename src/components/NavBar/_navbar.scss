@@ -1,31 +1,19 @@
 @import "../../style/variables.scss";
 
 nav.custom-navbar {
-  background: linear-gradient(
-    220deg,
-    #03624C 0%,                 
-    #032221 100%,  
-  );
+  background: linear-gradient(180deg, $bangladeshGreen 0%, $darkGreen 70%, $bg 90%);
   color: white;
   min-height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
-  z-index: 10;
+  padding: 0 3rem;
 }
 
-
 nav {
-  padding: 0 2rem;
-  background: #eee;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   .navRealm a {
-    margin: 0 8px;
+    margin: 0 50px;
   }
 
   .profilPic {
