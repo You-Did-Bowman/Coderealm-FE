@@ -9,8 +9,14 @@ function Footer() {
 
   return (
     <>
-      <footer className="sticky top-[100vh] bg-[linear-gradient(220deg,#cf82e4_0%,rgba(78,50,235,0.1)_20%,rgba(78,50,235,0.3)_100%)] py-4 text-center border-t border-secondary">
-        <p className="text-white text-sm">Impressum</p>
+      <footer className="">
+       <a href ="https://github.com/Ahmad-al-sayedd"><i class="fa-brands fa-github"></i>Ahmad Al Sayed</a>
+       <a href="https://github.com/AndyZekaj"><i class="fa-brands fa-github"></i>Avdyl Zekaj</a>
+       <a href="https://github.com/divyasheen"><i class="fa-brands fa-github"></i>Divya Sheen</a>
+       <a href="https://github.com/You-Did-Bowman"><i class="fa-brands fa-github"></i>Judith Bohmann</a>
+
+
+
       </footer>
     </>
   );
