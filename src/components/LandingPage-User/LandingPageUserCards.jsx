@@ -62,7 +62,7 @@ const LandingPageUserCards = () => {
                 className={`w-full mb-12 sm:w-5/12 lg:w-3/12`}
               >
                 <div
-                  className="relative rounded-2xl border-2 border-accent p-4 min-h-[200px] xl:min-h-[550px] text-white bg-cover bg-center flex flex-col justify-between transition-transform hover:scale-110 duration-300 shadow-[0_8px_30px_rgba(255,255,255,0.4)] overflow-hidden"
+                  className="relative rounded-2xl border-2 border-accent p-4 min-h-[200px] xl:min-h-[550px] text-white bg-cover bg-center flex flex-col justify-between transition-transform hover:scale-110 duration-300 shadow-[0_8px_30px_rgba(255,255,255,0.4)] overflow-hidden cursor-pointer"
                   style={{ backgroundImage: `url(${c.backGroundImg})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/54 z-0"></div>
@@ -82,26 +82,26 @@ const LandingPageUserCards = () => {
 
       <h2 className = "lpuComingSoonH2">COMING SOON!</h2>
 
-      <article className="lpuComingSoonWrapper">
+      <article className="lpuComingSoonWrapper test container flex justify-between gap-1 flex-wrap mt-">
         {cards
           .filter((c) => c.description === "COMING SOON")
           .map((c, i) => {
             return (
               <section
                 key={i}
-                className=""
+                className={`w-full mb-12 sm:w-5/12 lg:w-3/12`}
               >
                 <div
-                  className=""
+                  className="relative rounded-2xl border-2 border-accent p-4 min-h-[200px] xl:min-h-[200px] text-white bg-cover bg-center flex flex-col justify-between shadow-[0_8px_30px_rgba(255,255,255,0.4)] overflow-hidden after:absolute after:inset-0 after:bg-[#1a191998] after:rounded-2xl "
                   style={{ backgroundImage: `url(${c.backGroundImg})` }}
                 >
-                  <div className=""></div>
-                  <div className="">
-                    <h3 className="">
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/54 z-0"></div>
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <h3 className="text-2xl text-accent font-bold">
                       {c.title}
                     </h3>
                   </div>
-                  <p className="">
+                  <p className="text-sm mt-1 bg-black/50 p-2 rounded">
                     {c.description}
                   </p>
                 </div>

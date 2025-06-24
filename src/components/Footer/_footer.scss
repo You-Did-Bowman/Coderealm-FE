@@ -1,9 +1,23 @@
-// footer {
+@import "../../style/variables.scss";
+@import "../../style/mixins.scss";
 
-//     /* JB: I will work on this tomorrow ... don't be confused. It looks like mess but this will be the most beatuifull fixed footer EVER! */
-//     border: 2px solid red;
-//     position: fixed;
-//     bottom: 0;
-// }
 
-// AZ - sorry -_-
+footer {
+    background: linear-gradient(180deg,  $bg 0%, $darkGreen 90%);
+    color: white;
+    width: 100%;
+    min-height: 4rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 3rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    font-size: .9em;
+
+    a {
+        display: grid;
+        text-align: center;
+    }
+}

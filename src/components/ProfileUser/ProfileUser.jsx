@@ -155,7 +155,9 @@ function ProfilNav() {
     const fetchProfileAvatar = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/${profileId}/getProfilPic`,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/user/${profileId}/getProfilPic`,
           {
             method: "GET",
             headers: {
@@ -216,85 +218,99 @@ function ProfilNav() {
   const dates = readDateForPosts();
 
   // console.log(posts);
-  
+
   return (
     <>
-      <div className="profileHeader"></div>
-      {userData ? (
-        <div className="profileWrapper">
-          <div className="profileAvatar">
-            <img src={profileAvatar || placeholderAvatar} />
-            <div>{userData.username}</div>
-          </div>
+      <div className="gradient-bg">
+        <div className="gradient-container">
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="profileContentWrapper">
 
-          <div className="profileInfo">
-            <div>
-              <h2>Info</h2>
-              {userData.info === 0 ? "" : userData.info}
-            </div>
-            <div>
-              <h3>Location</h3> <p>{userData.location}</p>
-            </div>
-            <div>
-              <h3>Joined</h3> <p>{joined}</p>
-            </div>
-            <div>
-              <h3>Social</h3> <p>{userData.social}</p>
-            </div>
-            {userId === profileId ? (
-              <button onClick={() => navigate("/edit-profile")}>
-                Edit Profile
-              </button>
-            ) : (
-              <div></div>
-            )}
-          </div>
-
-          <div className="line1 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-
-          <div className="profileStats">
-            <h2>XP</h2>
-            <ProgressBar
-              className="xpBar"
-              maxCompleted={300}
-              completed={userData.xp}
-              customLabel={userData.xp}
-            />
-          </div>
-
-          <hr className="line2 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-
-          <div className="profileBadges">
-            <h2>Badges</h2>
-            <div className = "singleBadge">
-
-            {badges?.map((badge, index) => (
-              <div key={index}>
-                <img className="badgePic" src={badge.url} alt={badge.name} />
-                <h3>{badge.name}</h3>
-                <p>{badge.description}</p>
-                <p className = "badgeDep">{badge.dependency}</p>
+          <div className="profileHeader"></div>
+          {userData ? (
+            <div className="profileWrapper">
+              <div className="profileAvatar">
+                <img src={profileAvatar || placeholderAvatar} />
+                <div>{userData.username}</div>
               </div>
-            ))}
-            </div>
-          </div>
 
-          <hr className="line3 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-
-          <div className="profilePosts">
-            <h2>Posts</h2>
-            {posts?.map((post, index) => (
-              <div key={index}>
-                <h3>{post.title}</h3>
-                <p>{post.body}</p>
-                <p className="dateProfile">{dates[index]}</p>
+              <div className="profileInfo">
+                <div>
+                  <h2>Info</h2>
+                  {userData.info === 0 ? "" : userData.info}
+                </div>
+                <div>
+                  <h3>Location</h3> <p>{userData.location}</p>
+                </div>
+                <div>
+                  <h3>Joined</h3> <p>{joined}</p>
+                </div>
+                <div>
+                  <h3>Social</h3> <a href= {userData.social}>{userData.social}</a>
+                </div>
+                {userId === profileId ? (
+                  <button onClick={() => navigate("/edit-profile")}>
+                    Edit Profile
+                  </button>
+                ) : (
+                  <div></div>
+                )}
               </div>
-            ))}
-          </div>
+
+              <div className="line1 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+
+              <div className="profileStats">
+                <h2>XP</h2>
+                <ProgressBar
+                  className="xpBar"
+                  maxCompleted={300}
+                  completed={userData.xp}
+                  customLabel={userData.xp}
+                  />
+              </div>
+
+              <hr className="line2 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+
+              <div className="profileBadges">
+                <h2>Badges</h2>
+                <div className="singleBadge">
+                  {badges?.map((badge, index) => (
+                    <div key={index}>
+                      <img
+                        className="badgePic"
+                        src={badge.url}
+                        alt={badge.name}
+                        />
+                      <h3>{badge.name}</h3>
+                      <p>{badge.description}</p>
+                      <p className="badgeDep">{badge.dependency}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <hr className="line3 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+
+              <div className="profilePosts">
+                <h2>Posts</h2>
+                {posts?.map((post, index) => (
+                  <div key={index}>
+                    <h3>{post.title}</h3>
+                    <p>{post.body}</p>
+                    <p className="dateProfile">{dates[index]}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>... Data loading ...</p>
+          )}
         </div>
-      ) : (
-        <p>... Data loading ...</p>
-      )}
+          </div>
+      </div>
     </>
   );
 }

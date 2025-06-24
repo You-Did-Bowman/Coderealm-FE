@@ -1,17 +1,18 @@
 @import "../../style/variables.scss";
 
 nav.custom-navbar {
-  background: linear-gradient(180deg, $bangladeshGreen 0%, $darkGreen 70%, $bg 90%);
+  background: linear-gradient(180deg, $darkGreen 0%, #80808000 100%);
   color: white;
+  width: 100%;
   min-height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 3rem;
+  position: absolute;
 }
 
 nav {
-
   .navRealm a {
     margin: 0 50px;
   }
@@ -20,7 +21,10 @@ nav {
     margin: 1rem;
     width: 50px;
     height: 50px;
-    border-radius: 25px;
+
+    img {
+      border-radius: 50px;
+    }
   }
 }
 
@@ -36,7 +40,7 @@ nav {
     width: 200px;
     text-align: center;
     list-style: none;
-    z-index: 10;
+    z-index: 5;
 
     .imgLi {
       margin: 0 auto;
@@ -48,6 +52,7 @@ nav {
 
     img {
       margin: 0 auto;
+      border-radius: 50px;
     }
 
     li {
