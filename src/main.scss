@@ -12,12 +12,12 @@
 }
 
 button {
-  background: linear-gradient(90deg,#832a9b 0%, #1c0663 100%);
+  background: linear-gradient(90deg, #832a9b 0%, #1c0663 100%);
   font-weight: bold;
-  box-shadow: inset 0px 0px 3px 0px #FFFFFF;
+  box-shadow: inset 0px 0px 3px 0px #ffffff;
   color: white;
-  padding: .5em 1em;
-  border-radius: 20px
+  padding: 0.5em 1em;
+  border-radius: 20px;
 }
 
 // JB: DONT'T change it!
@@ -25,6 +25,11 @@ html,
 body,
 #root {
   height: 100%;
+}
+
+body {
+  color: $antiFlashWhite;
+//  background-color: $richBlack;
 }
 
 // Playground styles

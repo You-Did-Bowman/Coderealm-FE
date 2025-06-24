@@ -49,10 +49,8 @@ const NavBar = () => {
   return (
     <>
       <nav className="custom-navbar">
-        <button className="navHomeBtn" onClick={handleHomeClick}>
-          Home
-        </button>
         <div className={"navRealm"}>
+          <NavLink to={`/landingPageUser/${userId}/${token}`}> Home </NavLink>
           {[
             "university",
             "forumia",
