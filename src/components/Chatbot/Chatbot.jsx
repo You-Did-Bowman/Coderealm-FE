@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import JadaViewer from "../Jada/JadaViewer";
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
@@ -69,6 +70,8 @@ export default function Chatbot() {
   };
 
   return (
+  <div className="flex h-screen">
+    {/* Chatbot Layout */}
     <div className="flex flex-col flex-1 h-full">
       <div
         className={`transition-all duration-500 ease-in-out w-full max-w-xl mx-auto p-4 text-white flex-1 ${
@@ -175,5 +178,12 @@ export default function Chatbot() {
         </div>
       </div>
     </div>
-  );
+
+    {/* JADA Viewer Panel */}
+    <div className="w-[400px] min-w-[300px] bg-black">
+      <JadaViewer />
+    </div>
+  </div>
+);
+
 }

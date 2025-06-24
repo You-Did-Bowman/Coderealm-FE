@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import userImage from "../../assets/images/userImage.jpeg";
 import { UserContext } from "../../contexts/userIdContext";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-
+import CreatePost from "../CreatePost/CreatePost.jsx";
 const CommunityPostPage = () => {
   const { community } = useParams();
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const CommunityPostPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [profileAvatars, setProfileAvatars] = useState({});
-
+  const [newPost, setNewPost] = useState(false);
   // State for tracking which post's comments are shown
   const [visibleComments, setVisibleComments] = useState(null);
   // Track input value for new comments
@@ -363,17 +363,31 @@ const CommunityPostPage = () => {
           : '"p-5 bg-background min-h-screen text-white p-3  flex  "'
       }
     >
-      <section
+          
+
+       <section
         className={
           communityPosts.length > 0
             ? "max-w-4xl mx-auto space-y-6 "
             : "max-w-4xl mx-auto space-y-6 flex flex-col items-center"
         }
       >
+
+      {newPost && < CreatePost  setNewPost={setNewPost} />}
+
+
         <h1 className="text-secondary font-vt323 text-3xl mb-4">
           Posts in {community}
         </h1>
-
+    
+         {/* Buttons */}
+         <article className="flex gap-4 justify-end items-center px-6">
+              
+              <button onClick={()=>setNewPost(true)} className="bg-primary rounded-2xl p-2 px-3 text-sm font-medium text-white shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(0,254,254,0.2)] hover:shadow-[0_0px_12px_rgba(171,239,254,0.5),0_0px_40px_rgba(171,239,254,0.25)]">
+                New Post
+              </button>
+              
+          </article>
         {communityPosts.length === 0 ? (
           <p className="">No posts found for this community.</p>
         ) : (
@@ -578,6 +592,9 @@ const CommunityPostPage = () => {
         )}
       </section>
     </main>
+
+
+
   );
 };
 
