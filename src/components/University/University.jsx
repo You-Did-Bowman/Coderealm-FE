@@ -239,6 +239,7 @@ export default function University() {
 
   const [code, setCode] = useState("");
   const [exercise, setExercise] = useState(null);
+  const [lessonContent, setLessonContent] = useState(null); // NEW: Lesson content state
   const [isLoading, setIsLoading] = useState(true);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -266,56 +267,60 @@ export default function University() {
     localStorage.setItem(`${STORAGE_KEY}_${exerciseId}`, code);
   }, [code, exerciseId]);
 
-  useEffect(() => {
-  const fetchExercise = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/courses/exercises/${exerciseId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch exercise");
-      const data = await response.json();
-      setExercise(data);
-      
-      // Set current course from location state or exercise data
-      const courseId = location.state?.activeCourse || data.course_id;
-      setCurrentCourseId(courseId);
-
-      // Check if exercise is already completed
-      const progressRes = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${data.lesson_id}/progress`,
-        { credentials: "include" }
-      );
-
-      if (progressRes.ok) {
-        const progress = await progressRes.json();
-        const currentEx = progress.find(
-          (ex) => ex.id === parseInt(exerciseId)
+   useEffect(() => {
+    const fetchExerciseAndLesson = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch exercise
+        const exerciseRes = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/courses/exercises/${exerciseId}`
         );
-        if (currentEx?.completed) {
-          setIsCompleted(true);
+        if (!exerciseRes.ok) throw new Error("Failed to fetch exercise");
+        const exerciseData = await exerciseRes.json();
+        setExercise(exerciseData);
+        
+        // Fetch lesson content
+        const lessonRes = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exerciseData.lesson_id}`
+        );
+        if (!lessonRes.ok) throw new Error("Failed to fetch lesson content");
+        const lessonData = await lessonRes.json();
+        setLessonContent(lessonData);
+
+        // Check if exercise is already completed
+        const progressRes = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/courses/lessons/${exerciseData.lesson_id}/progress`,
+          { credentials: "include" }
+        );
+
+        if (progressRes.ok) {
+          const progress = await progressRes.json();
+          const currentEx = progress.find(
+            (ex) => ex.id === parseInt(exerciseId)
+          );
+          if (currentEx?.completed) {
+            setIsCompleted(true);
+          }
         }
+
+        const savedCode = localStorage.getItem(`${STORAGE_KEY}_${exerciseId}`);
+        if (!savedCode) {
+          setCode(exerciseData.placeholder || "// Write your code here...");
+        } else {
+          setCode(savedCode);
+        }
+        setIsLoading(false);
+      } catch (err) {
+        toast.error(err.message);
+        navigate("/university");
       }
+    };
 
-      const savedCode = localStorage.getItem(`${STORAGE_KEY}_${exerciseId}`);
-      if (!savedCode) {
-        setCode(data.placeholder || "// Write your code here...");
-      } else {
-        setCode(savedCode);
-      }
-      setIsLoading(false);
-    } catch (err) {
-      toast.error(err.message);
-      navigate("/university");
-    }
-  };
+    fetchExerciseAndLesson();
+  }, [exerciseId, navigate, location.state]);
 
-  fetchExercise();
-}, [exerciseId, navigate, location.state]);
-
-  useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_${exerciseId}`, code);
-  }, [code, exerciseId]);
+ 
 
   const run = async () => {
     try {
@@ -476,15 +481,15 @@ export default function University() {
   //     toast.error("Failed to get next exercise");
   //   }
   // };
-  if (isLoading) {
+ if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background text-white">
-        Loading exercise...
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
       </div>
     );
   }
 
-  if (!exercise) {
+  if (!exercise || !lessonContent) {
     return (
       <div className="flex items-center justify-center h-screen bg-background text-white">
         Exercise not found
@@ -502,10 +507,11 @@ export default function University() {
         className="relative w-full h-48 bg-cover bg-center"
         style={{ backgroundImage: `url(${universityImage})` }}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <h1 className="text-6xl text-secondary font-bold">
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
+          <h1 className="text-5xl text-secondary font-bold">
             UNIVERSITY OF TERMINALIA
           </h1>
+          
         </div>
       </header>
 
@@ -513,70 +519,143 @@ export default function University() {
       <div className="flex flex-1 overflow-hidden p-2 rounded-md border border-accent m-4">
         {/* Left - Content */}
         <div className="w-1/2 p-4 space-y-6 overflow-y-auto">
-          <div className="flex justify-between items-center">
-            <h2 className="text-5xl font-semibold">{exercise.title}</h2>
-            <div className="flex items-center space-x-2">
-              <span
-                className={`px-2 py-1 text-m rounded-full ${
-                  exercise.difficulty === "Easy"
-                    ? "bg-green-500"
-                    : exercise.difficulty === "Medium"
-                    ? "bg-yellow-500"
-                    : exercise.difficulty === "Hard"
-                    ? "bg-red-500"
-                    : "bg-gray-500"
-                }`}
-              >
-                {exercise.difficulty}
+          {/* Lesson Content */}
+          <div className="bg-gray-900/50 p-4 rounded-lg border border-accent">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl text-accent">{lessonContent.title}</h2>
+              <span className="text-sm text-gray-400">
+                {exercise.xp_reward} XP
               </span>
-              {isCompleted && (
-                <span className="px-2 py-1 text-xs bg-secondary text-black rounded-full">
-                  +{exercise.xp_reward} XP
-                </span>
-              )}
             </div>
+            
+            <div className="prose prose-invert text-gray-300 max-w-none">
+              <ReactMarkdown
+                components={{
+                  code({ inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={oneDark}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code
+                        className="bg-gray-800 text-secondary px-1 rounded"
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {lessonContent.content}
+              </ReactMarkdown>
+            </div>
+            
+            {lessonContent.example && (
+              <div className="mt-4">
+                <h3 className="text-accent text-xl mb-2">Example</h3>
+                <div className="prose prose-invert text-gray-300 max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code
+                            className="bg-gray-800 text-secondary px-1 rounded"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {`\`\`\`${exercise.language}\n${lessonContent.example}\n\`\`\``}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div>
-            <h3 className="text-accent text-xl mb-1">Description</h3>
-            <div className="prose prose-invert text-xl text-gray-300 max-w-none">
-              <ReactMarkdown>{exercise.description}</ReactMarkdown>
-            </div>
-          </div>
-
-          {exercise.example && (
-            <div>
-              <h3 className="text-accent text-xl mb-1">Example</h3>
-              <div className="prose prose-invert text-m text-gray-300 max-w-none">
-                <ReactMarkdown
-                  components={{
-                    code({ inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || "");
-                      return !inline && match ? (
-                        <SyntaxHighlighter
-                          style={oneDark}
-                          language={match[1]}
-                          PreTag="div"
-                          {...props}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code
-                          className="bg-gray-800 text-secondary px-1 rounded"
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                  }}
+          {/* Exercise Description */}
+          <div className="bg-gray-900/50 p-4 rounded-lg border border-accent">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl text-accent">{exercise.title}</h2>
+              <div className="flex items-center space-x-2">
+                <span
+                  className={`px-2 py-1 text-sm rounded-full ${
+                    exercise.difficulty === "Easy"
+                      ? "bg-green-500"
+                      : exercise.difficulty === "Medium"
+                      ? "bg-yellow-500"
+                      : exercise.difficulty === "Hard"
+                      ? "bg-red-500"
+                      : "bg-gray-500"
+                  }`}
                 >
-                  {`\`\`\`${exercise.language}\n${exercise.example}\n\`\`\``}
-                </ReactMarkdown>
+                  {exercise.difficulty}
+                </span>
+                {isCompleted && (
+                  <span className="px-2 py-1 text-xs bg-secondary text-black rounded-full">
+                    +{exercise.xp_reward} XP
+                  </span>
+                )}
               </div>
             </div>
-          )}
+
+            <div className="prose prose-invert text-gray-300 max-w-none">
+              <ReactMarkdown>{exercise.description}</ReactMarkdown>
+            </div>
+
+            {exercise.example && (
+              <div className="mt-4">
+                <h3 className="text-accent text-xl mb-2">Exercise Example</h3>
+                <div className="prose prose-invert text-gray-300 max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code
+                            className="bg-gray-800 text-secondary px-1 rounded"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {`\`\`\`${exercise.language}\n${exercise.example}\n\`\`\``}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right - Code & Terminal */}
@@ -605,7 +684,7 @@ export default function University() {
               )}
 
               <button
-                onClick={() => setBotOpen((o) => !o)} // toggle open/close bot
+                onClick={() => setBotOpen((o) => !o)}
                 className="bg-primary text-white px-3 py-1 rounded border border-accent hover:bg-secondaryHover"
               >
                 {botOpen ? "Close Bot" : "Ask Bot"}
@@ -625,7 +704,6 @@ export default function University() {
                 theme: "vs-dark",
                 fontSize: 20,
                 fontFamily: "VT323",
-                // NEW: Enhanced editor configuration
                 tabCompletion: "on",
                 quickSuggestions: true,
                 autoClosingBrackets: "always",
@@ -633,7 +711,6 @@ export default function University() {
                 suggestOnTriggerCharacters: true,
                 wordBasedSuggestions: true,
               }}
-              // placeholder text
               beforeMount={(monaco) => {
                 monaco.editor.defineTheme("myTheme", {
                   base: "vs-dark",
@@ -646,14 +723,12 @@ export default function University() {
                     "editor.foreground": "#CCCCCC",
                   },
                 });
-                // NEW: Set up language-specific features
                 if (exercise.language === "html") {
                   monaco.languages.html.htmlDefaults.setOptions({
                     suggest: { html5: true },
                   });
                   registerHtmlSnippets(monaco);
 
-                  // NEW: HTML boilerplate snippet
                   monaco.languages.registerCompletionItemProvider("html", {
                     triggerCharacters: ["!"],
                     provideCompletionItems(model, position) {
@@ -708,11 +783,12 @@ export default function University() {
                   setCode(exercise.placeholder);
                 }
                 monaco.editor.setTheme("myTheme");
-                enableAltZToggle(editor, monaco); // NEW: Enable ALT+Z toggle
+                enableAltZToggle(editor, monaco);
               }}
             />
           </div>
-          {/* Live Preview (Conditional based on language) */}
+          
+          {/* Live Preview */}
           {(exercise.language === "html" || exercise.language === "css") &&
             showPreview && (
               <div className="h-56 border-t border-accent bg-white overflow-auto">
