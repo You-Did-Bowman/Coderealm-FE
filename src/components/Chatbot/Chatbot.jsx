@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import JadaViewer from "../Jada/JadaViewer";
+
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
@@ -179,10 +179,7 @@ export default function Chatbot() {
       </div>
     </div>
 
-    {/* JADA Viewer Panel */}
-    <div className="w-[400px] min-w-[300px] bg-black">
-      <JadaViewer />
-    </div>
+    
   </div>
 );
 
