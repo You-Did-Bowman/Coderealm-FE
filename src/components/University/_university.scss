@@ -1,0 +1,136 @@
+@import "../../style/variables.scss";
+@import "../../style/mixins.scss";
+
+.university-page {
+  background-color: $bg;
+  color: $fontPrimary;
+  font-family: $basic-font;
+
+  .header-overlay {
+    background-color: rgba($darkGreen, 0.85);
+  }
+
+  .main-content {
+    border: 1px solid $bangladeshGreen;
+    border-radius: 4px;
+  }
+
+  .content-panel {
+    background-color: $richBlack;
+    border: 1px solid $bangladeshGreen;
+    border-radius: 4px;
+  }
+
+  .badge-completed {
+    background-color: $mountainMeadow;
+    color: $richBlack;
+  }
+
+  .difficulty-easy {
+    background-color: $mountainMeadow;
+    color: $richBlack;
+  }
+
+  .difficulty-medium {
+    background-color: lighten($bangladeshGreen, 10%);
+    color: $fontPrimary;
+  }
+
+  .difficulty-hard {
+    background-color: darken($bangladeshGreen, 10%);
+    color: $fontPrimary;
+  }
+
+  h1, h2, h3, h4 {
+    color: $mountainMeadow;
+  }
+
+  .editor-container {
+    background-color: $richBlack;
+    border-left: 1px solid $bangladeshGreen;
+  }
+
+  .editor-header {
+    background-color: $richBlack;
+    border-bottom: 1px solid $bangladeshGreen;
+  }
+
+  .button-run {
+    background-color: $mountainMeadow;
+    color: $richBlack;
+    border: none;
+
+    &:hover {
+      background-color: darken($mountainMeadow, 10%);
+    }
+  }
+
+  .button-secondary {
+    background-color: transparent;
+    border: 1px solid $mountainMeadow;
+    color: $fontPrimary;
+
+    &:hover {
+      background-color: rgba($mountainMeadow, 0.2);
+    }
+  }
+
+  .terminal-panel {
+    background-color: $richBlack;
+    border-top: 1px solid $bangladeshGreen;
+    color: $mountainMeadow;
+  }
+
+  .navigation-buttons {
+    background-color: $richBlack;
+    border-top: 1px solid $bangladeshGreen;
+  }
+
+  .preview-panel {
+    border-top: 1px solid $bangladeshGreen;
+  }
+
+  .chatbot {
+    background-color: $darkGreen;
+    border-left: 1px solid $mountainMeadow;
+    
+    .chatbot-header {
+      background-color: $richBlack;
+      border-bottom: 1px solid $bangladeshGreen;
+      color: $mountainMeadow;
+    }
+
+    .messages {
+      background-color: darken($darkGreen, 2%);
+    }
+
+    .input-bar {
+      background-color: $richBlack;
+      border-top: 1px solid $bangladeshGreen;
+    }
+  }
+
+  .prose-invert {
+    h1, h2, h3, h4 {
+      color: $mountainMeadow;
+    }
+    
+    p, li {
+      color: $antiFlashWhite;
+    }
+    
+    strong {
+      color: rgba($mountainMeadow, 0.8);
+    }
+    
+    code {
+      background-color: $darkGreen;
+      color: $mountainMeadow;
+    }
+    
+    blockquote {
+      color: $pistachio;
+      border-left-color: $mountainMeadow;
+    }
+  }
+}
