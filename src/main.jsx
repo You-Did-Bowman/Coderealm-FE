@@ -6,11 +6,13 @@ import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./contexts/userIdContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </BrowserRouter>
 );
+
+
+// REMOVED STRICT MODE
+// Needs observation A.Z.

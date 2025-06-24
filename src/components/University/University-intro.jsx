@@ -12,17 +12,17 @@ const UniversityIntro = () => {
   const [courseExercises, setCourseExercises] = useState([]);
   const [activeCourse, setActiveCourse] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
-  const [lessonContent, setLessonContent] = useState(null);
-  const [exercises, setExercises] = useState([]);
   const [error, setError] = useState(null);
-  const [lessonCompletion, setLessonCompletion] = useState({});
+  const [lessonUnlockStatus, setLessonUnlockStatus] = useState({});
+  const [loadingStatus, setLoadingStatus] = useState({});
 
   // Fetch courses and lessons
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        setLoadingStatus((prev) => ({ ...prev, courses: true }));
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/courses`
+          `${import.meta.env.VITE_BACKEND_URL}/api/courses/minimal`
         );
         if (!response.ok) throw new Error("Failed to fetch courses");
         const data = await response.json();
@@ -38,8 +38,10 @@ const UniversityIntro = () => {
         } else if (data[0]?.lessons?.[0]?.id) {
           setActiveLesson(data[0].lessons[0].id);
         }
+        setLoadingStatus((prev) => ({ ...prev, courses: false }));
       } catch (err) {
         setError(err.message);
+        setLoadingStatus((prev) => ({ ...prev, courses: false }));
       }
     };
     fetchCourses();
@@ -60,10 +62,11 @@ const UniversityIntro = () => {
   // Fetch all exercises for the active course
   useEffect(() => {
     if (!activeCourse || !user?.id) return;
-
+   const currentToken = token || localStorage.getItem("token");
     const fetchCourseExercises = async () => {
       const currentToken = token || localStorage.getItem("token");
       try {
+        setLoadingStatus((prev) => ({ ...prev, exercises: true }));
         const response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
@@ -76,119 +79,48 @@ const UniversityIntro = () => {
         if (!response.ok) throw new Error("Failed to fetch course exercises");
         const data = await response.json();
         setCourseExercises(data);
+        setLoadingStatus((prev) => ({ ...prev, exercises: false }));
       } catch (err) {
         setError(err.message);
+        setLoadingStatus((prev) => ({ ...prev, exercises: false }));
       }
     };
     fetchCourseExercises();
   }, [activeCourse, user?.id]);
 
-  // Add this useEffect to handle lesson IDs properly
+  // Calculate lesson unlock status
   useEffect(() => {
-    if (
-      activeLesson &&
-      typeof activeLesson !== "number" &&
-      typeof activeLesson !== "string"
-    ) {
-      console.error("Invalid activeLesson type:", activeLesson);
-      setActiveLesson(null);
-    }
-  }, [activeLesson]);
+    if (!courses.length || !courseExercises.length) return;
 
-  // Fetch lesson content and check exercise completion
-  useEffect(() => {
-    if (
-      !activeLesson ||
-      (typeof activeLesson !== "number" && typeof activeLesson !== "string")
-    ) {
-      return;
-    }
+    const calculateUnlockStatus = () => {
+      const status = {};
 
-    const fetchLessonData = async () => {
-      try {
-        // Fetch lesson content
-        const lessonRes = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/courses/lessons/${activeLesson}`
-        );
-        if (!lessonRes.ok) throw new Error("Failed to fetch lesson");
-        const lessonData = await lessonRes.json();
-        setLessonContent(lessonData);
-
-        // Find the current lesson's exercise
-        const currentExercise = courseExercises.find(
-          (ex) => ex.lesson_id === parseInt(activeLesson)
-        );
-
-        if (!currentExercise) {
-          setExercises([]);
-          return;
+      // For each course
+      courses.forEach((course) => {
+        // First lesson is always unlocked
+        if (course.lessons.length > 0) {
+          status[course.lessons[0].id] = true;
         }
 
-        // Fetch progress for this exercise
-        const progressRes = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/courses/lessons/${activeLesson}/progress`,
-          {
-            credentials: "include",
-            headers: { Authorization: `Bearer ${user.token}` },
-          }
-        );
+        // Subsequent lessons depend on previous completion
+        for (let i = 1; i < course.lessons.length; i++) {
+          const prevLessonId = course.lessons[i - 1].id;
+          const prevLessonExercises = courseExercises.filter(
+            (ex) => ex.lesson_id === prevLessonId
+          );
 
-        let exerciseWithProgress = {
-          ...currentExercise,
-          completed: false,
-        };
-
-        if (progressRes.ok) {
-          const progressData = await progressRes.json();
-          if (progressData.length > 0) {
-            exerciseWithProgress.completed = Boolean(
-              progressData[0].is_completed
-            );
-          }
+          // Lesson is unlocked if all exercises in previous lesson are completed
+          status[course.lessons[i].id] =
+            prevLessonExercises.length > 0 &&
+            prevLessonExercises.every((ex) => ex.completed);
         }
+      });
 
-        // Find position in course sequence
-        const exerciseIndex = courseExercises.findIndex(
-          (ex) => ex.id === currentExercise.id
-        );
-
-        // Determine unlock status
-        const isFirstExercise = exerciseIndex === 0;
-        let isUnlocked = isFirstExercise;
-
-        if (!isFirstExercise) {
-          // Check all previous exercises
-          const previousExercises = courseExercises.slice(0, exerciseIndex);
-          isUnlocked = previousExercises.every((ex) => ex.completed);
-        }
-
-        setExercises([
-          {
-            ...exerciseWithProgress,
-            isUnlocked,
-            isFirst: isFirstExercise,
-          },
-        ]);
-
-        // Update completion status
-        setLessonCompletion({
-          [activeLesson]: {
-            completed: exerciseWithProgress.completed ? 1 : 0,
-            total: 1,
-            allDone: exerciseWithProgress.completed,
-          },
-        });
-      } catch (err) {
-        setError(err.message);
-      }
+      return status;
     };
 
-    fetchLessonData();
-  }, [activeLesson, courseExercises, user?.id]);
+    setLessonUnlockStatus(calculateUnlockStatus());
+  }, [courses, courseExercises]);
 
   // Handle course change
   const handleCourseChange = (courseId) => {
@@ -199,8 +131,38 @@ const UniversityIntro = () => {
     }
   };
 
+  // Get lesson title from course data
+  const getLessonTitle = (lessonId) => {
+    if (!activeCourse) return "";
+    const course = courses.find((c) => c.id === activeCourse);
+    if (!course) return "";
+    const lesson = course.lessons.find((l) => l.id === lessonId);
+    return lesson ? lesson.title : "";
+  };
+
+  // Calculate progress for a lesson
+  const calculateLessonProgress = (lessonId) => {
+    const lessonExercises = courseExercises.filter(
+      (ex) => ex.lesson_id === parseInt(lessonId)
+    );
+    const completed = lessonExercises.filter((ex) => ex.completed).length;
+    return {
+      completed,
+      total: lessonExercises.length,
+      allDone: completed === lessonExercises.length,
+    };
+  };
+
   if (error) {
     return <div className="text-red-500 text-center p-8">Error: {error}</div>;
+  }
+
+  if (loadingStatus.courses) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+      </div>
+    );
   }
 
   return (
@@ -263,14 +225,34 @@ const UniversityIntro = () => {
                   {course.lessons.map((lesson) => (
                     <li
                       key={lesson.id}
-                      className={`p-2 text-sm cursor-pointer rounded-md ${
+                      className={`p-2 text-sm rounded-md flex items-center ${
                         activeLesson === lesson.id
                           ? "bg-secondary/20 text-accent font-medium"
-                          : "hover:bg-gray-700/30"
+                          : lessonUnlockStatus[lesson.id]
+                          ? "hover:bg-gray-700/30 cursor-pointer"
+                          : "opacity-50 cursor-not-allowed"
                       }`}
-                      onClick={() => setActiveLesson(lesson.id)}
+                      onClick={() => {
+                        if (lessonUnlockStatus[lesson.id]) {
+                          setActiveLesson(lesson.id);
+                        }
+                      }}
                     >
                       {lesson.title}
+                      {!lessonUnlockStatus[lesson.id] && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 ml-2 text-yellow-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -281,136 +263,196 @@ const UniversityIntro = () => {
 
         {/* Right content area */}
         <div className="flex-1 flex flex-col gap-6">
-          {/* Lesson Content */}
-          <div className="border-2 border-accent rounded-lg p-4 md:p-6 bg-gray-900/50 relative">
-            {lessonContent ? (
-              <>
-                {lessonCompletion[activeLesson]?.allDone && (
-                  <div className="absolute top-4 right-4 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded-full flex items-center">
+          {/* Lesson Header */}
+          {activeLesson && (
+            <div className="border-2 border-accent rounded-lg p-4 md:p-6 bg-gray-900/50">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl md:text-3xl text-accent">
+                  {getLessonTitle(activeLesson)}
+                </h2>
+                {activeLesson && (
+                  <div className="text-sm text-gray-400">
+                    {calculateLessonProgress(activeLesson).completed}/
+                    {calculateLessonProgress(activeLesson).total} completed
+                    {calculateLessonProgress(activeLesson).allDone && (
+                      <span className="ml-2 text-green-500">✓</span>
+                    )}
+                  </div>
+                )}
+              </div>
+              {/* <p className="text-gray-300 mb-6">
+                {!lessonUnlockStatus[activeLesson] ? (
+                  <span className="text-yellow-500 flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 mr-1"
+                      className="h-5 w-5 mr-1"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                         clipRule="evenodd"
                       />
                     </svg>
-                    COMPLETED
-                  </div>
+                    Complete previous lesson to unlock this content
+                  </span>
+                ) : (
+                  "This lesson covers fundamental concepts and techniques."
                 )}
-                <div>
-                  <h2 className="text-2xl md:text-3xl mb-4 text-accent">
-                    {lessonContent.title}
-                  </h2>
-                  <div
-                    className="prose prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: lessonContent.content.replace(/\n/g, "<br />"),
-                    }}
-                  />
-                </div>
-                {lessonContent.example && (
-                  <div>
-                    <h3 className="text-accent text-lg mb-1">Example</h3>
-                    <pre className="bg-gray-800 p-4 rounded-md overflow-x-auto">
-                      <code className="text-sm text-gray-300">
-                        {lessonContent.example}
-                      </code>
-                    </pre>
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="text-gray-400 italic">
-                Select a lesson to view its content
-              </p>
-            )}
-          </div>
-
-          {/* Exercises */}
-          <div className="border-2 border-accent rounded-lg p-4 md:p-6 bg-gray-900/50">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl md:text-2xl">Exercises</h3>
-              {lessonCompletion[activeLesson] && (
-                <div className="text-sm text-gray-400">
-                  {lessonCompletion[activeLesson].completed}/
-                  {lessonCompletion[activeLesson].total} completed
-                  {lessonCompletion[activeLesson].allDone && (
-                    <span className="ml-2 text-green-500">✓</span>
-                  )}
-                </div>
-              )}
+              </p> */}
             </div>
-            {exercises.length > 0 ? (
-              <div className="grid gap-3">
-                {exercises.map((exercise) => (
-                  <div
-                    key={exercise.id}
-                    className={`p-3 border rounded-lg transition-colors ${
-                      !exercise.isUnlocked
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    } ${
-                      exercise.completed
-                        ? "border-green-500 bg-green-500/10"
-                        : exercise.isUnlocked
-                        ? "border-gray-700 hover:bg-gray-700/30 cursor-pointer"
-                        : "border-gray-800"
-                    }`}
-                    onClick={() => {
-                      if (exercise.isUnlocked) {
-                        navigate(`/university/${exercise.id}`, {
-                          state: {
-                            activeCourse,
-                            activeLesson,
-                          },
-                        });
-                      }
-                    }}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <span className="text-gray-400">
-                          Exercise {exercise.id}
-                        </span>
-                        <span className="mx-2 text-gray-600">|</span>
-                        <span>{exercise.title}</span>
-                        {!exercise.isUnlocked && !exercise.isFirst && (
-                          <span className="ml-2 text-yellow-500 text-sm">
-                            (Complete previous exercise to unlock)
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-accent mr-2">
-                          +{exercise.xp_reward} XP
-                        </span>
-                        {exercise.completed && (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-green-500"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          )}
+
+          {/* Exercises Table */}
+          <div className="border-2 border-accent rounded-lg p-4 md:p-6 bg-gray-900/50">
+            <h3 className="text-xl md:text-2xl mb-4">Exercises</h3>
+
+            {activeLesson ? (
+              loadingStatus.exercises ? (
+                <div className="flex justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent"></div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border-collapse">
+                    <thead>
+                      <tr className="border-b border-accent">
+                        <th className="py-2 px-4 text-left">Exercise</th>
+                        <th className="py-2 px-4 text-left">Title</th>
+                        <th className="py-2 px-4 text-left">XP</th>
+                        <th className="py-2 px-4 text-left">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {courseExercises
+                        .filter((ex) => ex.lesson_id === parseInt(activeLesson))
+                        .map((exercise, index) => {
+                          // Exercise is unlocked if:
+                          // 1. It's the first exercise in the lesson, OR
+                          // 2. All previous exercises in the lesson are completed
+                          const isUnlocked =
+                            index === 0 ||
+                            courseExercises
+                              .filter(
+                                (ex) => ex.lesson_id === parseInt(activeLesson)
+                              )
+                              .slice(0, index)
+                              .every((ex) => ex.completed);
+
+                          return (
+                            <tr
+                              key={exercise.id}
+                              className={`border-b border-gray-700 ${
+                                isUnlocked && lessonUnlockStatus[activeLesson]
+                                  ? "hover:bg-gray-800/50 cursor-pointer"
+                                  : "opacity-50"
+                              }`}
+                              onClick={() => {
+                                if (
+                                  isUnlocked &&
+                                  lessonUnlockStatus[activeLesson]
+                                ) {
+                                  navigate(`/university/${exercise.id}`, {
+                                    state: {
+                                      activeCourse,
+                                      activeLesson,
+                                    },
+                                  });
+                                }
+                              }}
+                            >
+                              <td className="py-3 px-4">
+                                <div className="flex items-center">
+                                  <span className="mr-2">
+                                    Exercise {index + 1}
+                                  </span>
+                                  {!isUnlocked && index > 0 && (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-4 w-4 text-yellow-500"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="py-3 px-4">{exercise.title}</td>
+                              <td className="py-3 px-4 text-accent">
+                                +{exercise.xp_reward} XP
+                              </td>
+                              <td className="py-3 px-4">
+                                {exercise.completed ? (
+                                  <span className="text-green-500 flex items-center">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-4 w-4 mr-1"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    Completed
+                                  </span>
+                                ) : (
+                                  <>
+                                    {lessonUnlockStatus[activeLesson] &&
+                                    isUnlocked ? (
+                                      <button
+                                        className="bg-secondary text-black px-3 py-1 rounded hover:bg-secondaryHover transition-colors"
+                                        onClick={() => {
+                                          navigate(
+                                            `/university/${exercise.id}`,
+                                            {
+                                              state: {
+                                                activeCourse,
+                                                activeLesson,
+                                              },
+                                            }
+                                          );
+                                        }}
+                                      >
+                                        Start
+                                      </button>
+                                    ) : (
+                                      <span
+                                        className={
+                                          isUnlocked &&
+                                          lessonUnlockStatus[activeLesson]
+                                            ? "text-secondary"
+                                            : "text-gray-500"
+                                        }
+                                      >
+                                        {!lessonUnlockStatus[activeLesson]
+                                          ? "Lesson Locked"
+                                          : !isUnlocked
+                                          ? "Complete previous"
+                                          : "Start"}
+                                      </span>
+                                    )}
+                                  </>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              )
             ) : (
               <p className="text-gray-400 italic">
-                No exercises available for this lesson
+                Select a lesson to view its exercises
               </p>
             )}
           </div>
