@@ -1,0 +1,28 @@
+
+.chat-panel {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+
+    scrollbar-width: thin;
+    scrollbar-color: #292c2c transparent;
+}
+
+// scrollbar
+.scrollable {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #280433 transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #707d7d;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

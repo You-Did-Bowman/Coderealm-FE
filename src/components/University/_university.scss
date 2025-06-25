@@ -121,20 +121,45 @@
     66% { transform: translateY(10px) translateX(-10px); }
     100% { transform: translateY(0) translateX(0); }
   }
-
   .content-panel {
+    // Your existing styles
     background: $cardBg;
-    //border: 1px solid $stone;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
     overflow-y: scroll;
     max-height: 500px;
-    
+  
     &:hover {
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     }
+  
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: $stone;
+      border-radius: 6px;
+      background-clip: padding-box;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: darken($stone, 10%);
+    }
+  
+    &::-webkit-scrollbar-button {
+      display: none; // Or style them if needed
+    }
   }
-
+  .content-panel {
+    scrollbar-width: thin;
+    scrollbar-color: $stone transparent;
+  }
   .editor-container {
     background: $cardBg;
     border: 1px solid $stone;
