@@ -12,12 +12,7 @@
 }
 
 button {
-  background: $bangladeshGreen;
-  font-weight: bold;
-  box-shadow: inset 0px 0px 3px 0px #ffffff;
-  color: white;
-  padding: 0.5em 1em;
-  border-radius: 20px;
+  @include jada-button;
 }
 
 // JB: DONT'T change it!

@@ -138,7 +138,7 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-secondary font-vt323 md:text-2xl    py-2 rounded-md hover:bg-opacity-90 transition"
+            className=" bg-secondary font-vt323 md:text-2xl py-2 rounded-md hover:bg-opacity-90 transition mx-auto"
           >
             Register Now
           </button>

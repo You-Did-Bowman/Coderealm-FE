@@ -13,9 +13,23 @@ nav.custom-navbar {
 }
 
 nav {
-  .navRealm a {
-    margin: 0 50px;
+
+  a {
+    margin: 0 1.5em;
+    padding: .5em;
   }
+
+  > a:first-child {
+    font-size: 1.4em;
+    padding: .5em;
+  }
+
+    a:hover {
+      border-bottom: 2px solid #351a50;
+      border-radius: 5px;
+      background: linear-gradient(0deg, #663399 0%, rgba(188, 71, 255, 0) 100%);
+    }
+
 
   .profilPic {
     margin: 1rem;
