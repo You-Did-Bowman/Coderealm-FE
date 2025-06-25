@@ -2,135 +2,221 @@
 @import "../../style/mixins.scss";
 
 .university-page {
-  background-color: $bg;
-  color: $fontPrimary;
-  font-family: $basic-font;
+  background: radial-gradient(ellipse at top, #011414 0%, #000a0a 100%);
+  color: white;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  min-height: 100vh;
+  
+  .header-container {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(#2cc295, 0.2) 0%,
+        rgba(#2cc295, 0) 70%
+      );
+      z-index: 0;
+    }
+  }
+  .corruption-line {
+  background: linear-gradient(90deg, 
+    rgba(106, 13, 173, 0) 0%, 
+    rgba(106, 13, 173, 1) 20%,
+    rgba(255, 0, 255, 1) 50%,
+    rgba(106, 13, 173, 1) 80%,
+    rgba(106, 13, 173, 0) 100%);
+  height: 2px;
+  margin: 1rem auto;
+  width: 90%;
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: rgba(255, 0, 255, 0.7);
+    animation: glitch 0.3s infinite alternate;
+    filter: blur(1px);
+  }
+  
+  &::before {
+    left: 30%;
+    animation-delay: 0.1s;
+  }
+  
+  &::after {
+    right: 30%;
+    animation-delay: 0.2s;
+  }
+}
 
-  .header-overlay {
-    background-color: rgba($darkGreen, 0.85);
+@keyframes glitch {
+  0% { 
+    opacity: 0; 
+    transform: translateY(-1px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(1px);
+  }
+}
+
+  .highlight-text {
+    background: linear-gradient(to right, #2cc295, #FCA5A5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
   }
 
-  .main-content {
-    border: 1px solid $bangladeshGreen;
-    border-radius: 4px;
+  .floating-animation {
+    animation: float 4s ease-in-out infinite;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    
+    @keyframes float {
+      0% { 
+        transform: translateY(0px) rotate(0.5deg); 
+        text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      }
+      50% { 
+        transform: translateY(-15px) rotate(-0.5deg);
+        text-shadow: 0 15px 25px rgba(0,0,0,0.7), 
+                     0 0 30px rgba(#FCA5A5, 0.4);
+      }
+      100% { 
+        transform: translateY(0px) rotate(0.5deg);
+        text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      }
+    }
+  }
+
+  .floating-element-1 {
+    animation: floatElement 8s ease-in-out infinite;
+  }
+  
+  .floating-element-2 {
+    animation: floatElement 10s ease-in-out infinite 1s;
+  }
+  
+  .floating-element-3 {
+    animation: floatElement 12s ease-in-out infinite 0.5s;
+  }
+  
+  @keyframes floatElement {
+    0% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-20px) translateX(15px); }
+    66% { transform: translateY(10px) translateX(-10px); }
+    100% { transform: translateY(0) translateX(0); }
   }
 
   .content-panel {
-    background-color: $richBlack;
-    border: 1px solid $bangladeshGreen;
-    border-radius: 4px;
-  }
-
-  .badge-completed {
-    background-color: $mountainMeadow;
-    color: $richBlack;
-  }
-
-  .difficulty-easy {
-    background-color: $mountainMeadow;
-    color: $richBlack;
-  }
-
-  .difficulty-medium {
-    background-color: lighten($bangladeshGreen, 10%);
-    color: $fontPrimary;
-  }
-
-  .difficulty-hard {
-    background-color: darken($bangladeshGreen, 10%);
-    color: $fontPrimary;
-  }
-
-  h1, h2, h3, h4 {
-    color: $mountainMeadow;
+    background: rgba(#0a1f1f, 0.7);
+    border: 1px solid rgba(#FCA5A5, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: rgba(#FCA5A5, 0.4);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
   }
 
   .editor-container {
-    background-color: $richBlack;
-    border-left: 1px solid $bangladeshGreen;
+    background: rgba(#0a1f1f, 0.7);
+    border: 1px solid rgba(#FCA5A5, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
 
   .editor-header {
-    background-color: $richBlack;
-    border-bottom: 1px solid $bangladeshGreen;
-  }
-
-  .button-run {
-    background-color: $mountainMeadow;
-    color: $richBlack;
-    border: none;
-
-    &:hover {
-      background-color: darken($mountainMeadow, 10%);
-    }
-  }
-
-  .button-secondary {
-    background-color: transparent;
-    border: 1px solid $mountainMeadow;
-    color: $fontPrimary;
-
-    &:hover {
-      background-color: rgba($mountainMeadow, 0.2);
-    }
+    background: rgba(#0a1f1f, 0.8);
   }
 
   .terminal-panel {
-    background-color: $richBlack;
-    border-top: 1px solid $bangladeshGreen;
-    color: $mountainMeadow;
+    background: rgba(#0a1f1f, 0.9);
   }
 
   .navigation-buttons {
-    background-color: $richBlack;
-    border-top: 1px solid $bangladeshGreen;
+    background: rgba(#0a1f1f, 0.8);
   }
 
   .preview-panel {
-    border-top: 1px solid $bangladeshGreen;
+    background: rgba(#0a1f1f, 0.9);
   }
 
   .chatbot {
-    background-color: $darkGreen;
-    border-left: 1px solid $mountainMeadow;
+    background: rgba(#0a1f1f, 0.9);
+    border-left: 1px solid rgba(#FCA5A5, 0.3);
     
     .chatbot-header {
-      background-color: $richBlack;
-      border-bottom: 1px solid $bangladeshGreen;
-      color: $mountainMeadow;
+      background: rgba(#0a1f1f, 0.9);
+      border-bottom: 1px solid rgba(#FCA5A5, 0.3);
+      color: #2cc295;
     }
 
     .messages {
-      background-color: darken($darkGreen, 2%);
+      background: rgba(#0a1f1f, 0.8);
     }
 
     .input-bar {
-      background-color: $richBlack;
-      border-top: 1px solid $bangladeshGreen;
+      background: rgba(#0a1f1f, 0.9);
+      border-top: 1px solid rgba(#FCA5A5, 0.3);
     }
   }
 
   .prose-invert {
     h1, h2, h3, h4 {
-      color: $mountainMeadow;
+      color: #2cc295;
     }
     
     p, li {
-      color: $antiFlashWhite;
+      color: white;
     }
     
     strong {
-      color: rgba($mountainMeadow, 0.8);
+      color: #2cc295;
     }
     
     code {
-      background-color: $darkGreen;
-      color: $mountainMeadow;
+      background-color: #0a1f1f;
+      color: #2cc295;
+      border: 1px solid rgba(#FCA5A5, 0.2);
     }
     
     blockquote {
-      color: $pistachio;
-      border-left-color: $mountainMeadow;
+      color: #a0d9d9;
+      border-left-color: #2cc295;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .main-content {
+      flex-direction: column;
+    }
+    
+    .editor-container,
+    .content-panel {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    
+    .header-container {
+      height: 200px;
+    }
+    
+    .floating-animation {
+      font-size: 2.5rem;
     }
   }
 }
