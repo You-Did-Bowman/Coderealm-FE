@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import universityImage from "../../assets/images/university.png";
 import { UserContext } from "../../contexts/userIdContext";
 import "./_universityIntro.scss";
 
@@ -168,39 +167,49 @@ const UniversityIntro = () => {
   return (
     <div className="university-intro min-h-screen">
       {/* Header */}
-      <div
-        className="header-container relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] mx-auto mb-6 md:mb-8 overflow-hidden"
-        style={{
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center tracking-wide">
+      <div className="header-container relative w-full h-[250px] sm:h-[300px] md:h-[350px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center tracking-wide text-white floating-animation">
             UNIVERSITY OF
             <br />
-            TERMINALIA
+            <span className="highlight-text">TERMINALIA</span>
           </h1>
         </div>
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1f1f] via-[#002d28] to-[#0a1f1f] opacity-95"></div>
+        <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-[#011414] to-transparent"></div>
 
+        {/* Animated floating elements */}
+        <div className="absolute top-1/4 left-1/4 w-6 h-6 rounded-full bg-[#2cc295] opacity-20 floating-element-1"></div>
+        <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-[#FCA5A5] opacity-15 floating-element-2"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-10 h-10 rounded-full bg-[#2cc295] opacity-10 floating-element-3"></div>
+      </div>
+      {/* Corruption Line */}
+      <div className="corruption-line w-full h-1"></div>
       {/* Main Content */}
-      <div className="flex flex-col lg:flex-row gap-4 md:gap-6 p-4">
+      <div className="flex flex-col lg:flex-row gap-6 p-4 max-w-7xl mx-auto">
         {/* Left sidebar - Courses */}
-        <div className="sidebar w-full lg:w-[280px] rounded-lg p-3 md:p-4">
-          <h2 className="text-xl mb-4 text-[#2cc295]">Courses</h2>
+        <div className="sidebar w-full lg:w-[300px] rounded-xl p-4 backdrop-blur-sm">
+          <h2 className="text-xl mb-4 text-white font-semibold border-b border-[#FCA5A550] pb-2">
+            Courses
+          </h2>
           {courses.map((course) => (
             <div key={course.id} className="mb-4">
               <div
-                className={`course-header flex justify-between items-center p-2 cursor-pointer rounded-md ${
-                  activeCourse === course.id ? "active-course" : ""
+                className={`course-header flex justify-between items-center p-3 cursor-pointer rounded-lg transition-all duration-300 ${
+                  activeCourse === course.id
+                    ? "bg-gradient-to-r from-[#2cc295] to-[#1e8c72] text-[#011414]"
+                    : "bg-[#0a1f1f] hover:bg-[#0f2a2a] text-white"
                 }`}
                 onClick={() => handleCourseChange(course.id)}
               >
-                <h3 className="text-lg md:text-xl">{course.title}</h3>
+                <h3 className="text-base md:text-lg font-medium">
+                  {course.title}
+                </h3>
                 <svg
-                  className={`w-4 h-4 md:w-5 md:h-5 transform transition-transform ${
-                    activeCourse === course.id ? "rotate-180" : ""
+                  className={`w-5 h-5 transform transition-transform ${
+                    activeCourse === course.id
+                      ? "rotate-180 text-[#011414]"
+                      : "text-[#2cc295]"
                   }`}
                   fill="none"
                   viewBox="0 0 24 24"
@@ -217,14 +226,18 @@ const UniversityIntro = () => {
 
               {/* Lessons dropdown */}
               {activeCourse === course.id && course.lessons && (
-                <ul className="ml-4 mt-2 space-y-1 pl-3">
+                <ul className="ml-2 mt-3 space-y-2 pl-2 border-l border-[#FCA5A530]">
                   {course.lessons.map((lesson) => (
                     <li
                       key={lesson.id}
-                      className={`lesson-item p-2 text-sm rounded-md flex items-center ${
-                        activeLesson === lesson.id ? "active-lesson" : ""
+                      className={`lesson-item p-2 text-sm rounded-md transition-all ${
+                        activeLesson === lesson.id
+                          ? "text-[#2cc295] font-medium bg-[#2cc29510]"
+                          : "text-white"
                       } ${
-                        lessonUnlockStatus[lesson.id] ? "unlocked" : "locked"
+                        lessonUnlockStatus[lesson.id]
+                          ? "cursor-pointer hover:bg-[#2cc29515] pl-3"
+                          : "opacity-60 cursor-not-allowed"
                       }`}
                       onClick={() => {
                         if (lessonUnlockStatus[lesson.id]) {
@@ -232,21 +245,30 @@ const UniversityIntro = () => {
                         }
                       }}
                     >
-                      {lesson.title}
-                      {!lessonUnlockStatus[lesson.id] && (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 ml-2 text-[#707d7d]"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
+                      <div className="flex items-center">
+                        <div
+                          className={`w-2 h-2 rounded-full mr-3 ${
+                            activeLesson === lesson.id
+                              ? "bg-[#FCA5A5]"
+                              : "bg-white"
+                          }`}
+                        ></div>
+                        {lesson.title}
+                        {!lessonUnlockStatus[lesson.id] && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 ml-2 text-[#FCA5A5]"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -259,18 +281,32 @@ const UniversityIntro = () => {
         <div className="flex-1 flex flex-col gap-6">
           {/* Lesson Header */}
           {activeLesson && (
-            <div className="content-panel rounded-lg p-4 md:p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl md:text-3xl text-[#2cc295]">
+            <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3">
+                <h2 className="text-2xl md:text-3xl text-white font-bold tracking-tight">
                   {getLessonTitle(activeLesson)}
                 </h2>
                 {activeLesson && (
-                  <div className="progress-text text-sm">
-                    {calculateLessonProgress(activeLesson).completed}/
-                    {calculateLessonProgress(activeLesson).total} completed
-                    {calculateLessonProgress(activeLesson).allDone && (
-                      <span className="ml-2 completed-badge">✓</span>
-                    )}
+                  <div className="flex items-center gap-3">
+                    <div className="w-40 bg-[#0a1f1f] rounded-full h-2.5 border border-[#FCA5A530]">
+                      <div
+                        className="bg-gradient-to-r from-[#2cc295] to-[#FCA5A5] h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (calculateLessonProgress(activeLesson).completed /
+                              calculateLessonProgress(activeLesson).total) *
+                            100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="progress-text text-sm text-white bg-[#0a1f1f] px-3 py-1 rounded-full border border-[#FCA5A530]">
+                      {calculateLessonProgress(activeLesson).completed}/
+                      {calculateLessonProgress(activeLesson).total}
+                      {calculateLessonProgress(activeLesson).allDone && (
+                        <span className="ml-2 completed-badge">✓</span>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -278,23 +314,33 @@ const UniversityIntro = () => {
           )}
 
           {/* Exercises Table */}
-          <div className="content-panel rounded-lg p-4 md:p-6">
-            <h3 className="text-xl md:text-2xl mb-4 text-[#2cc295]">Exercises</h3>
+          <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
+            <h3 className="text-xl md:text-2xl mb-5 text-white font-semibold tracking-tight">
+              Exercises
+            </h3>
 
             {activeLesson ? (
               loadingStatus.exercises ? (
                 <div className="flex justify-center py-8">
-                  <div className="spinner animate-spin rounded-full h-8 w-8 border-t-2 border-b-2"></div>
+                  <div className="spinner animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#2cc295]"></div>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="exercise-table min-w-full border-collapse">
+                  <table className="exercise-table min-w-full">
                     <thead>
-                      <tr>
-                        <th className="py-2 px-4 text-left">Exercise</th>
-                        <th className="py-2 px-4 text-left">Title</th>
-                        <th className="py-2 px-4 text-left">XP</th>
-                        <th className="py-2 px-4 text-left">Status</th>
+                      <tr className="border-b border-[#FCA5A550]">
+                        <th className="py-4 px-4 text-left text-white font-medium uppercase tracking-wider">
+                          Exercise
+                        </th>
+                        <th className="py-4 px-4 text-left text-white font-medium uppercase tracking-wider">
+                          Title
+                        </th>
+                        <th className="py-4 px-4 text-left text-white font-medium uppercase tracking-wider">
+                          XP
+                        </th>
+                        <th className="py-4 px-4 text-left text-white font-medium uppercase tracking-wider">
+                          Status
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -313,9 +359,9 @@ const UniversityIntro = () => {
                           return (
                             <tr
                               key={exercise.id}
-                              className={`${
+                              className={`border-b border-[#FCA5A520] ${
                                 isUnlocked && lessonUnlockStatus[activeLesson]
-                                  ? "cursor-pointer"
+                                  ? "hover:bg-[#2cc29508] cursor-pointer"
                                   : "opacity-70"
                               }`}
                               onClick={() => {
@@ -332,7 +378,7 @@ const UniversityIntro = () => {
                                 }
                               }}
                             >
-                              <td className="py-3 px-4">
+                              <td className="py-4 px-4 text-white">
                                 <div className="flex items-center">
                                   <span className="mr-2">
                                     Exercise {index + 1}
@@ -340,7 +386,7 @@ const UniversityIntro = () => {
                                   {!isUnlocked && index > 0 && (
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
-                                      className="h-4 w-4 text-[#707d7d]"
+                                      className="h-4 w-4 text-[#FCA5A5] ml-1"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
                                     >
@@ -353,16 +399,18 @@ const UniversityIntro = () => {
                                   )}
                                 </div>
                               </td>
-                              <td className="py-3 px-4">{exercise.title}</td>
-                              <td className="py-3 px-4 text-[#2cc295]">
+                              <td className="py-4 px-4 text-white">
+                                {exercise.title}
+                              </td>
+                              <td className="py-4 px-4 text-[#2cc295] font-medium">
                                 +{exercise.xp_reward} XP
                               </td>
-                              <td className="py-3 px-4">
+                              <td className="py-4 px-4">
                                 {exercise.completed ? (
-                                  <span className="completed-badge flex items-center">
+                                  <span className="completed-badge flex items-center text-[#2cc295]">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
-                                      className="h-4 w-4 mr-1"
+                                      className="h-5 w-5 mr-1"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
                                     >
@@ -393,14 +441,14 @@ const UniversityIntro = () => {
                                           );
                                         }}
                                       >
-                                        Start
+                                        Start Now
                                       </button>
                                     ) : (
-                                      <span className="locked-text">
+                                      <span className="locked-text text-[#FCA5A5]">
                                         {!lessonUnlockStatus[activeLesson]
-                                          ? "Lesson Locked"
+                                          ? "Complete Previous Lesson"
                                           : !isUnlocked
-                                          ? "Complete previous"
+                                          ? "Complete Previous Exercise"
                                           : "Start"}
                                       </span>
                                     )}
@@ -415,9 +463,12 @@ const UniversityIntro = () => {
                 </div>
               )
             ) : (
-              <p className="text-[#aacbc4] italic">
-                Select a lesson to view its exercises
-              </p>
+              <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-[#FCA5A530] rounded-lg">
+                <div className="text-[#FCA5A5] text-5xl mb-4">⌨️</div>
+                <p className="text-[#aacbc4] text-lg italic">
+                  Select a lesson to view its exercises
+                </p>
+              </div>
             )}
           </div>
         </div>
