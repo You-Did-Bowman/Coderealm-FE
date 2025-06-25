@@ -27,6 +27,7 @@
       z-index: 0;
     }
   }
+
   .corruption-line {
   background: linear-gradient(90deg, 
     rgba(106, 13, 173, 0) 0%, 
@@ -74,7 +75,7 @@
 }
 
   .highlight-text {
-    background: linear-gradient(to right, #2cc295, #FCA5A5);
+    background: linear-gradient(to right, #2cc295, rgba(106, 13, 173, 1));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -120,48 +121,76 @@
     66% { transform: translateY(10px) translateX(-10px); }
     100% { transform: translateY(0) translateX(0); }
   }
-
   .content-panel {
-    background: rgba(#0a1f1f, 0.7);
-    border: 1px solid rgba(#FCA5A5, 0.3);
+    // Your existing styles
+    background: $cardBg;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
-    
+    overflow-y: scroll;
+    max-height: 500px;
+  
     &:hover {
-      border-color: rgba(#FCA5A5, 0.4);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     }
+  
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: $stone;
+      border-radius: 6px;
+      background-clip: padding-box;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: darken($stone, 10%);
+    }
+  
+    &::-webkit-scrollbar-button {
+      display: none; // Or style them if needed
+    }
   }
-
+  .content-panel {
+    scrollbar-width: thin;
+    scrollbar-color: $stone transparent;
+  }
   .editor-container {
-    background: rgba(#0a1f1f, 0.7);
-    border: 1px solid rgba(#FCA5A5, 0.3);
+    background: $cardBg;
+    border: 1px solid $stone;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-height: 1040px;
+    width: 37em;
   }
 
   .editor-header {
-    background: rgba(#0a1f1f, 0.8);
+    background: $cardBg;
   }
 
   .terminal-panel {
-    background: rgba(#0a1f1f, 0.9);
+    background: $cardBg;
   }
 
   .navigation-buttons {
-    background: rgba(#0a1f1f, 0.8);
+    background: $cardBg;
   }
 
   .preview-panel {
-    background: rgba(#0a1f1f, 0.9);
+    background: $cardBg;
   }
 
   .chatbot {
     background: rgba(#0a1f1f, 0.9);
-    border-left: 1px solid rgba(#FCA5A5, 0.3);
+    border-left: 1px solid $stone;
     
     .chatbot-header {
-      background: rgba(#0a1f1f, 0.9);
-      border-bottom: 1px solid rgba(#FCA5A5, 0.3);
+      background: $cardBg;
+      border-bottom: 1px solid $stone;
       color: #2cc295;
     }
 
@@ -170,8 +199,8 @@
     }
 
     .input-bar {
-      background: rgba(#0a1f1f, 0.9);
-      border-top: 1px solid rgba(#FCA5A5, 0.3);
+      background: $cardBg;
+      border-top: 1px solid $stone;
     }
   }
 
@@ -199,6 +228,8 @@
       border-left-color: #2cc295;
     }
   }
+
+  
 
   @media (max-width: 1024px) {
     .main-content {

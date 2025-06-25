@@ -63,7 +63,7 @@ function ChatBot({ isOpen, onClose, setWidth }) {
         <span className="text-[#2cc295]">J.A.D.A.</span>
         <button
           onClick={onClose}
-          className="text-[#FCA5A5] hover:text-white px-2 py-1"
+          className=""
           aria-label="Close chat"
         >
           Close
@@ -422,6 +422,7 @@ export default function University() {
         <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-[#FCA5A5] opacity-15 floating-element-2"></div>
         <div className="absolute bottom-1/4 left-1/2 w-10 h-10 rounded-full bg-[#2cc295] opacity-10 floating-element-3"></div>
       </div>
+
        {/* Corruption Line */}
       <div className="corruption-line w-full h-1"></div>
 
@@ -494,7 +495,7 @@ export default function University() {
                 <h3 className="text-[#2cc295] text-xl font-semibold mb-6">
                   Example
                 </h3>
-                <div className="bg-[#0a1f1f] p-6 rounded-lg border border-[#FCA5A530]">
+                <div className="bg-[#0a1f1f]  p-6 rounded-lg border border-[#FCA5A530]">
                   <SyntaxHighlighter
                     style={oneDark}
                     language={exercise.language}
@@ -509,10 +510,10 @@ export default function University() {
           </div>
           
           {/* Exercise Description */}
-          <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
-            <div className="flex justify-between items-center mb-4">
+          <div className="content-panel   rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
+            <div className="flex  justify-between items-center mb-4">
               <h2 className="text-2xl text-[#2cc295]">{exercise.title}</h2>
-              <div className="flex items-center space-x-2">
+              <div className="flex  items-center space-x-2">
                 <span
                   className={`px-2 py-1 text-sm rounded-full ${
                     exercise.difficulty === "Easy" ? "bg-[#2cc295] text-[#011414]" :
@@ -571,7 +572,7 @@ export default function University() {
         </div>
 
         {/* Right - Code & Terminal */}
-        <div className="editor-container w-1/2 flex flex-col rounded-xl bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
+        <div className="editor-container flex flex-col rounded-xl bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
           {/* Editor Header */}
           <div className="editor-header flex justify-between items-center px-4 py-2 border-b border-[#FCA5A530]">
             <h3 className="text-[#2cc295] text-xl">
@@ -580,7 +581,7 @@ export default function University() {
             <div className="space-x-2">
               <button
                 onClick={run}
-                className="button-run px-3 py-1 rounded disabled:bg-gray-600 disabled:cursor-not-allowed bg-gradient-to-r from-[#2cc295] to-[#1e8c72] text-[#011414] font-medium hover:opacity-90 transition-opacity"
+                className=""
                 disabled={isEvaluating}
               >
                 {isEvaluating ? "RUNNING..." : "RUN"}
@@ -588,14 +589,14 @@ export default function University() {
               {(exercise.language === "html" || exercise.language === "css") && (
                 <button
                   onClick={() => setShowPreview((p) => !p)}
-                  className="button-secondary px-3 py-1 rounded border border-[#FCA5A5] text-white hover:bg-[#FCA5A520] transition-colors"
+                  className=""
                 >
                   {showPreview ? "Hide Preview" : "Preview"}
                 </button>
               )}
               <button
                 onClick={() => setBotOpen((o) => !o)}
-                className="button-secondary px-3 py-1 rounded border border-[#2cc295] text-white hover:bg-[#2cc29520] transition-colors"
+                className=""
               >
                 {botOpen ? "Close Bot" : "Ask Bot"}
               </button>
@@ -725,14 +726,14 @@ export default function University() {
           {/* Navigation Buttons */}
           <div className="navigation-buttons flex justify-between items-center p-4 border-t border-[#FCA5A530]">
             <button
-              className="button-secondary px-4 py-2 border border-[#FCA5A5] rounded text-white hover:bg-[#FCA5A520] transition-colors"
+              className="rounded "
               onClick={() => navigate("/university")}
             >
               Back
             </button>
             <button
               onClick={handleComplete}
-              className={`px-4 py-2 rounded font-medium ${
+              className={`rounded  ${
                 isCompleted
                   ? "bg-gradient-to-r from-[#2cc295] to-[#1e8c72] text-[#011414] hover:opacity-90 transition-opacity"
                   : "bg-gray-600 text-gray-400 cursor-not-allowed"

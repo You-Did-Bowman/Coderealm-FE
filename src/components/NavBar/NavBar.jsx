@@ -50,7 +50,7 @@ const NavBar = () => {
     <>
       <nav className="custom-navbar">
 
-      <NavLink to={`/landingPageUser/${userId}/${token}`}> <i class="fa-solid fa-house"></i> </NavLink>
+      <NavLink className="navHoverLink" to={`/landingPageUser/${userId}/${token}`}> <i className="fa-solid fa-house"></i> </NavLink>
         <div className={"navRealm"}>
           
           {[
@@ -58,11 +58,11 @@ const NavBar = () => {
             "forumia",
             "playground",
             "Chatbot",
-            "bugadune",
+            //"bugadune",
             //"csscrypta",
             //"towerofapion",
           ].map((path) => (
-            <NavLink key={path} to={`/${path}`}>
+            <NavLink className="navHoverLink" key={path} to={`/${path}`}>
               {path[0].toUpperCase() + path.slice(1)}
             </NavLink>
           ))}

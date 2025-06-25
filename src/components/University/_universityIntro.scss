@@ -28,6 +28,7 @@
       z-index: 0;
     }
   }
+
   .corruption-line {
   background: linear-gradient(90deg, 
     rgba(106, 13, 173, 0) 0%, 
@@ -67,7 +68,7 @@
 }
 
   .highlight-text {
-    background: linear-gradient(to right, #2cc295, #FCA5A5);
+    background: linear-gradient(to right, #2cc295, #6a0dad);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -115,13 +116,12 @@
   }
 
   .sidebar, .content-panel {
-    background: rgba(#0a1f1f, 0.7);
-    border: 1px solid rgba(#FCA5A5, 0.3); // Changed to #FCA5A5
+    background: $cardBg;
+    border: 1px solid $stone; // Changed to #FCA5A5
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
     
     &:hover {
-      border-color: rgba(#FCA5A5, 0.4); // Increased opacity on hover
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     }
   }
@@ -155,31 +155,11 @@
     
     tbody tr {
       transition: background 0.2s ease;
-      border-bottom: 1px solid rgba(#FCA5A5, 0.2); // Added border
+      border-bottom: 1px solid $stone; // Added border
       
       td {
         padding: 1.25rem;
       }
-    }
-  }
-
-  .start-button {
-    background: linear-gradient(to right, #2cc295, #1e8c72);
-    color: #011414;
-    border: none;
-    border-radius: 25px;
-    padding: 0.4rem 1.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(#2cc295, 0.3);
-    letter-spacing: 0.5px;
-    font-family: 'Inter', sans-serif;
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(#FCA5A5, 0.5);
-      background: linear-gradient(to right, #2cc295, #FCA5A5);
     }
   }
 
@@ -190,7 +170,7 @@
 
   .spinner {
     border-top-color: #2cc295;
-    border-bottom-color: #FCA5A5;
+    border-bottom-color: #6a0dad;
     width: 2.5rem;
     height: 2.5rem;
     border-width: 3px;

@@ -260,7 +260,7 @@ function ProfilNav() {
                 )}
               </div>
 
-              <div className="line1 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+              <div className="line1 corruption-line w-full h-1"></div>
 
               <div className="profileStats">
                 <h2>XP</h2>
@@ -272,7 +272,7 @@ function ProfilNav() {
                   />
               </div>
 
-              <hr className="line2 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+              <div className="line2 corruption-line w-full h-1"></div>
 
               <div className="profileBadges">
                 <h2>Badges</h2>
@@ -292,7 +292,7 @@ function ProfilNav() {
                 </div>
               </div>
 
-              <hr className="line3 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+              <div className="line3 corruption-line w-full h-1"></div>
 
               <div className="profilePosts">
                 <h2>Posts</h2>
