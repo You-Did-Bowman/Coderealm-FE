@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import universityImage from "../../assets/images/university.png";
 import { toast } from "react-toastify";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import rehypeRaw from "rehype-raw";
-import "./_university.scss"; // Import the SCSS file
+import "./_university.scss";
 
-/* ─────────────── ChatBot pane ─────────────── */
 function ChatBot({ isOpen, onClose, setWidth }) {
   const [msg, setMsg] = useState("");
   const messagesEndRef = useRef(null);
@@ -61,19 +59,18 @@ function ChatBot({ isOpen, onClose, setWidth }) {
       } z-50 flex flex-col`}
       style={{ width: "500px" }}
     >
-      <header className="chatbot-header p-3 border-b flex justify-between items-center">
-        <span>J.A.D.A.</span>
+      <header className="chatbot-header p-3 border-b border-[#FCA5A530] flex justify-between items-center bg-[#0a1f1f]">
+        <span className="text-[#2cc295]">J.A.D.A.</span>
         <button
           onClick={onClose}
-          className="text-secondary hover:text-white px-2 py-1"
+          className="text-[#FCA5A5] hover:text-white px-2 py-1"
           aria-label="Close chat"
         >
           Close
         </button>
       </header>
 
-      {/* messages */}
-      <div className="messages flex-1 overflow-y-auto px-4 py-2 space-y-2">
+      <div className="messages flex-1 overflow-y-auto px-4 py-2 space-y-2 bg-[#0a1f1f]">
         {messages.map((m, i) => (
           <div key={i} className="text-xl ">
             {m.from === "user" ? (
@@ -95,7 +92,7 @@ function ChatBot({ isOpen, onClose, setWidth }) {
                         </SyntaxHighlighter>
                       ) : (
                         <code
-                          className="bg-gray-800 text-secondary px-1 rounded"
+                          className="bg-[#011414] text-[#2cc295] px-1 rounded border border-[#FCA5A530]"
                           {...props}
                         >
                           {children}
@@ -113,13 +110,12 @@ function ChatBot({ isOpen, onClose, setWidth }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* input bar */}
-      <div className="input-bar p-2 border-t flex gap-2">
+      <div className="input-bar p-2 border-t border-[#FCA5A530] flex gap-2 bg-[#0a1f1f]">
         <input
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          className="flex-1 bg-primary text-white text-sm px-2 py-1 rounded border border-accent focus:outline-none"
+          className="flex-1 bg-[#011414] text-white text-sm px-2 py-1 rounded border border-[#FCA5A530] focus:outline-none"
           placeholder="Type your question…"
         />
       </div>
@@ -145,15 +141,13 @@ function ChatBot({ isOpen, onClose, setWidth }) {
           document.addEventListener("mousemove", onMouseMove);
           document.addEventListener("mouseup", onMouseUp);
         }}
-        className="absolute left-0 top-0 h-full w-1 cursor-ew-resize bg-transparent hover:bg-secondary/20"
+        className="absolute left-0 top-0 h-full w-1 cursor-ew-resize bg-transparent hover:bg-[#FCA5A5]/20"
         style={{ zIndex: 60 }}
       ></div>
     </aside>
   );
 }
-/* ─────────── end ChatBot pane ─────────── */
 
-// Helper functions remain the same
 function registerHtmlSnippets(monaco) {
   monaco.languages.registerCompletionItemProvider("html", {
     provideCompletionItems: () => {
@@ -392,47 +386,56 @@ export default function University() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-background text-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+      <div className="flex items-center justify-center h-screen bg-[#011414] text-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#2cc295]"></div>
       </div>
     );
   }
 
   if (!exercise || !lessonContent) {
     return (
-      <div className="flex items-center justify-center h-screen bg-background text-white">
+      <div className="flex items-center justify-center h-screen bg-[#011414] text-white">
         Exercise not found
       </div>
     );
   }
 
   return (
-    <div className="university-page relative flex flex-col h-screen text-white transition-all duration-100 ease-in-out"
+    <div 
+      className="university-page relative flex flex-col min-h-screen text-white bg-gradient-to-br from-[#011414] to-[#000a0a]"
       style={{ paddingRight: botOpen ? `${botWidth}px` : 0 }}
     >
       {/* Header */}
-      <header
-        className="relative w-full h-48 bg-cover bg-center"
-        style={{ backgroundImage: `url(${universityImage})` }}
-      >
-        <div className="header-overlay absolute inset-0 flex flex-col items-center justify-center">
-          <h1 className="text-5xl font-bold">
-            UNIVERSITY OF TERMINALIA
+      <div className="header-container relative w-full h-[250px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center tracking-wide text-white floating-animation">
+            UNIVERSITY OF
+            <br />
+            <span className="highlight-text">TERMINALIA</span>
           </h1>
         </div>
-      </header>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1f1f] via-[#002d28] to-[#0a1f1f] opacity-95"></div>
+        <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-[#011414] to-transparent"></div>
+        
+        {/* Animated floating elements */}
+        <div className="absolute top-1/4 left-1/4 w-6 h-6 rounded-full bg-[#2cc295] opacity-20 floating-element-1"></div>
+        <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-[#FCA5A5] opacity-15 floating-element-2"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-10 h-10 rounded-full bg-[#2cc295] opacity-10 floating-element-3"></div>
+      </div>
+       {/* Corruption Line */}
+      <div className="corruption-line w-full h-1"></div>
 
       {/* Main content */}
-      <div className="main-content flex flex-1 overflow-hidden p-2 rounded-md border m-4">
+      <div className="main-content flex flex-1 overflow-hidden p-4 max-w-7xl mx-auto w-full gap-6">
         {/* Left - Content */}
-        <div className="w-1/2 p-4 space-y-6 overflow-y-auto">
+        <div className="w-1/2 space-y-6 overflow-y-auto">
           {/* Lesson Content */}
-          <div className="content-panel p-6 rounded-lg border">
+          <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-2xl font-bold text-white">
                 {lessonContent.title}
               </h2>
-              <span className="badge-completed text-sm px-3 py-1 rounded-full">
+              <span className="text-sm px-3 py-1 rounded-full bg-[#2cc295] text-[#011414]">
                 {exercise.xp_reward} XP
               </span>
             </div>
@@ -442,9 +445,9 @@ export default function University() {
         prose-headings:mt-10 prose-headings:mb-6 prose-headings:leading-10
         prose-ul:my-6 prose-ol:my-6
         prose-li:my-3 prose-li:leading-7
-        prose-strong:text-accent/80
-        prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-secondary
-        prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:italic"
+        prose-strong:text-[#2cc295]
+        prose-code:bg-[#0a1f1f] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-[#2cc295] prose-code:border prose-code:border-[#FCA5A530]
+        prose-blockquote:border-l-4 prose-blockquote:border-[#2cc295] prose-blockquote:pl-6 prose-blockquote:italic"
             >
               <ReactMarkdown
                 rehypePlugins={[rehypeRaw]}
@@ -463,7 +466,7 @@ export default function University() {
                       </SyntaxHighlighter>
                     ) : (
                       <code
-                        className="bg-gray-800 text-secondary px-1.5 py-0.5 rounded leading-6"
+                        className="bg-[#0a1f1f] text-[#2cc295] px-1.5 py-0.5 rounded leading-6 border border-[#FCA5A530]"
                         {...props}
                       >
                         {children}
@@ -471,12 +474,12 @@ export default function University() {
                     );
                   },
                   p: ({ node, children }) => (
-                    <p className="whitespace-pre-line my-6 leading-8">
+                    <p className="whitespace-pre-line my-6 leading-8 text-white">
                       {children}
                     </p>
                   ),
                   li: ({ node, children }) => (
-                    <li className="whitespace-pre-line my-3 leading-7">
+                    <li className="whitespace-pre-line my-3 leading-7 text-white">
                       {children}
                     </li>
                   ),
@@ -488,10 +491,10 @@ export default function University() {
 
             {lessonContent.example && (
               <div className="mt-10">
-                <h3 className="text-accent text-xl font-semibold mb-6">
+                <h3 className="text-[#2cc295] text-xl font-semibold mb-6">
                   Example
                 </h3>
-                <div className="bg-gray-800/30 p-6 rounded-lg">
+                <div className="bg-[#0a1f1f] p-6 rounded-lg border border-[#FCA5A530]">
                   <SyntaxHighlighter
                     style={oneDark}
                     language={exercise.language}
@@ -506,35 +509,35 @@ export default function University() {
           </div>
           
           {/* Exercise Description */}
-          <div className="content-panel p-4 rounded-lg border">
+          <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl text-accent">{exercise.title}</h2>
+              <h2 className="text-2xl text-[#2cc295]">{exercise.title}</h2>
               <div className="flex items-center space-x-2">
                 <span
                   className={`px-2 py-1 text-sm rounded-full ${
-                    exercise.difficulty === "Easy" ? "difficulty-easy" :
-                    exercise.difficulty === "Medium" ? "difficulty-medium" :
-                    exercise.difficulty === "Hard" ? "difficulty-hard" : "bg-gray-500"
+                    exercise.difficulty === "Easy" ? "bg-[#2cc295] text-[#011414]" :
+                    exercise.difficulty === "Medium" ? "bg-[#FCA5A5] text-[#011414]" :
+                    exercise.difficulty === "Hard" ? "bg-[#e74c3c] text-white" : "bg-gray-500"
                   }`}
                 >
                   {exercise.difficulty}
                 </span>
                 {isCompleted && (
-                  <span className="badge-completed px-2 py-1 text-xs rounded-full">
+                  <span className="px-2 py-1 text-xs rounded-full bg-[#2cc295] text-[#011414]">
                     +{exercise.xp_reward} XP
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="prose prose-invert text-gray-300 max-w-none">
+            <div className="prose prose-invert text-white max-w-none">
               <ReactMarkdown>{exercise.description}</ReactMarkdown>
             </div>
 
             {exercise.example && (
               <div className="mt-4">
-                <h3 className="text-accent text-xl mb-2">Exercise Example</h3>
-                <div className="prose prose-invert text-gray-300 max-w-none">
+                <h3 className="text-[#2cc295] text-xl mb-2">Exercise Example</h3>
+                <div className="prose prose-invert text-white max-w-none">
                   <ReactMarkdown
                     components={{
                       code({ inline, className, children, ...props }) {
@@ -550,7 +553,7 @@ export default function University() {
                           </SyntaxHighlighter>
                         ) : (
                           <code
-                            className="bg-gray-800 text-secondary px-1 rounded"
+                            className="bg-[#0a1f1f] text-[#2cc295] px-1 rounded border border-[#FCA5A530]"
                             {...props}
                           >
                             {children}
@@ -568,16 +571,16 @@ export default function University() {
         </div>
 
         {/* Right - Code & Terminal */}
-        <div className="editor-container w-1/2 flex flex-col">
+        <div className="editor-container w-1/2 flex flex-col rounded-xl bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
           {/* Editor Header */}
-          <div className="editor-header flex justify-between items-center px-4 py-2 border-b">
-            <h3 className="text-secondary text-xl">
+          <div className="editor-header flex justify-between items-center px-4 py-2 border-b border-[#FCA5A530]">
+            <h3 className="text-[#2cc295] text-xl">
               Code.{getLanguageExtension(exercise.language)}
             </h3>
             <div className="space-x-2">
               <button
                 onClick={run}
-                className="button-run px-3 py-1 rounded disabled:bg-gray-600 disabled:cursor-not-allowed"
+                className="button-run px-3 py-1 rounded disabled:bg-gray-600 disabled:cursor-not-allowed bg-gradient-to-r from-[#2cc295] to-[#1e8c72] text-[#011414] font-medium hover:opacity-90 transition-opacity"
                 disabled={isEvaluating}
               >
                 {isEvaluating ? "RUNNING..." : "RUN"}
@@ -585,14 +588,14 @@ export default function University() {
               {(exercise.language === "html" || exercise.language === "css") && (
                 <button
                   onClick={() => setShowPreview((p) => !p)}
-                  className="button-secondary px-3 py-1 rounded border"
+                  className="button-secondary px-3 py-1 rounded border border-[#FCA5A5] text-white hover:bg-[#FCA5A520] transition-colors"
                 >
                   {showPreview ? "Hide Preview" : "Preview"}
                 </button>
               )}
               <button
                 onClick={() => setBotOpen((o) => !o)}
-                className="button-secondary px-3 py-1 rounded border"
+                className="button-secondary px-3 py-1 rounded border border-[#2cc295] text-white hover:bg-[#2cc29520] transition-colors"
               >
                 {botOpen ? "Close Bot" : "Ask Bot"}
               </button>
@@ -626,7 +629,7 @@ export default function University() {
                     { token: "", foreground: "CCCCCC", background: "000000" },
                   ],
                   colors: {
-                    "editor.background": "#000000",
+                    "editor.background": "#011414",
                     "editor.foreground": "#CCCCCC",
                   },
                 });
@@ -698,8 +701,8 @@ export default function University() {
           {/* Live Preview */}
           {(exercise.language === "html" || exercise.language === "css") &&
             showPreview && (
-              <div className="preview-panel h-56 border-t bg-white overflow-auto">
-                <h4 className="text-black font-bold p-2 bg-secondary">
+              <div className="preview-panel h-56 border-t border-[#FCA5A530] bg-[#011414] overflow-auto">
+                <h4 className="text-white font-bold p-2 bg-[#0a1f1f]">
                   Live Preview
                 </h4>
                 <iframe
@@ -712,26 +715,26 @@ export default function University() {
             )}
 
           {/* Terminal */}
-          <div className="terminal-panel h-35 border-t p-2 text-sm overflow-auto">
-            <h4 className="mb-1">Terminal</h4>
-            <pre className="whitespace-pre-wrap text-sm">
+          <div className="terminal-panel h-35 border-t border-[#FCA5A530] p-4 text-sm overflow-auto bg-[#0a1f1f]">
+            <h4 className="mb-1 text-[#2cc295]">Terminal</h4>
+            <pre className="whitespace-pre-wrap text-sm text-white">
               {terminalOutput || "Click RUN to evaluate your code."}
             </pre>
           </div>
 
           {/* Navigation Buttons */}
-          <div className="navigation-buttons flex justify-between items-center p-4 border-t">
+          <div className="navigation-buttons flex justify-between items-center p-4 border-t border-[#FCA5A530]">
             <button
-              className="button-secondary px-4 py-1 border rounded"
+              className="button-secondary px-4 py-2 border border-[#FCA5A5] rounded text-white hover:bg-[#FCA5A520] transition-colors"
               onClick={() => navigate("/university")}
             >
               Back
             </button>
             <button
               onClick={handleComplete}
-              className={`px-4 py-1 rounded ${
+              className={`px-4 py-2 rounded font-medium ${
                 isCompleted
-                  ? "button-run hover:bg-secondaryHover"
+                  ? "bg-gradient-to-r from-[#2cc295] to-[#1e8c72] text-[#011414] hover:opacity-90 transition-opacity"
                   : "bg-gray-600 text-gray-400 cursor-not-allowed"
               }`}
               disabled={!isCompleted}
