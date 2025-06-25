@@ -79,12 +79,6 @@ function EditProfile() {
     }
   };
 
-  const borderButton = {
-    border: "1px solid blue",
-    backgroundColor: "lightblue",
-    cursor: "pointer",
-  };
-
   return (
     <>
       <div className="gradient-bg">
@@ -96,6 +90,7 @@ function EditProfile() {
           <div className="profileContentWrapper"></div>
 
           <div className="editWrapper">
+            <div className="editContainer">
             <form encType="multipart/form-data" className="formUpload">
               <h2>Upload an avatar: </h2>
               <input
@@ -104,10 +99,12 @@ function EditProfile() {
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files[0])}
               />
-              <button onClick={handleUpload} style={borderButton}>
+              <button onClick={handleUpload}>
                 Upload
               </button>
             </form>
+
+            <div className="corruption-line editLine1 w-full h-1"></div>
 
             <form
               action=""
@@ -146,19 +143,22 @@ function EditProfile() {
                   placeholder="Instagram, Github, etc."
                 />
               </div>
-              <button type="submit" style={borderButton}>
+              <button type="submit" >
                 Save changes
               </button>
             </form>
 
+             <div className="corruption-line editLine2 w-full h-1"></div> 
+
             <button
               onClick={() => navigate("/users/reset-password/:token")}
-              style={borderButton}
+             
               className="buttonPassword"
             >
               Reset Password
             </button>
           </div>
+        </div>
         </div>
       </div>
     </>

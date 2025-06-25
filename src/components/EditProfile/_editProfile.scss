@@ -2,22 +2,28 @@
 @import "../../style/mixins.scss";
 
 .editWrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 250px 500px 50px; 
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  gap: 2em;
+
 
   position: relative;
   z-index: 2;
 
-  width: 60%;
+  width: 80%;
   padding: 2em;
   border-radius: 50px;
   background-color: $cardBg;
   border: 1px solid rgba(255, 255, 255, 0.075);
   margin: 6em auto;
+
+  .editContainer {
+    width: 50%;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 180px .5frpx 0.5fr .5fr 50px;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
 
   .formUpload {
     width: 100%;
@@ -34,11 +40,14 @@
     h2 {
       @extend %h2Profile;
       grid-area: 1 / 1 / 2 / 5;
-      padding: 0.5em 0;
     }
 
     input {
       grid-area: 2 / 1 / 3 / 3;
+      border-radius: 10px;
+      padding: 0.5em;
+      background-color: #1e1e2f;
+      margin: 1em;
     }
 
     button {
@@ -51,66 +60,78 @@
   }
 
   .infoForm {
-    grid-area: 2 / 1 / 3 / 4;
+    grid-area: 3 / 1 / 4 / 4;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    
+
     justify-content: center;
     gap: 3em;
 
     h2 {
-        grid-area: 1 / 1 / 2 / 3;
-        @extend %h2Profile;
+      grid-area: 1 / 1 / 2 / 3;
+      @extend %h2Profile;
     }
 
     .inputLocation {
-        display:flex;
-        justify-content: space-between;
-        grid-area: 2 / 1 / 3 / 3;
+      display: flex;
+      justify-content: space-between;
+      grid-area: 2 / 1 / 3 / 3;
 
-        input {
-            width: 50%;
-            color: black;
-        }
+      input {
+        width: 50%;
+        border-radius: 10px;
+        padding: 0.5em;
+        background-color: #1e1e2f;
+      }
     }
 
     .inputInfo {
-        display:flex;
-        justify-content: space-between;
-        grid-area: 3 / 1 / 4 / 3;
+      display: flex;
+      justify-content: space-between;
+      grid-area: 3 / 1 / 4 / 3;
 
-        textarea {
-            width: 50%;
-            color: black;
-        }
+      textarea {
+        width: 50%;
+        border-radius: 10px;
+        padding: 0.5em;
+        background-color: #1e1e2f;
+      }
     }
 
     .inputSocial {
-        display:flex;
-        justify-content: space-between;
-        grid-area: 4 / 1 / 5 / 3; 
+      display: flex;
+      justify-content: space-between;
+      grid-area: 4 / 1 / 5 / 3;
 
-        input {
-            width: 50%;
-            color: black;
-        }
+      input {
+        width: 50%;
+        border-radius: 10px;
+        padding: 0.5em;
+        background-color: #1e1e2f;
+      }
     }
 
     button {
-        grid-area: 5 / 1 / 6 / 3;
+      grid-area: 5 / 1 / 6 / 3;
 
-        width: 150px;
-        margin: 0 auto;
+ 
+      margin: 1em auto;
     }
   }
 
   .buttonPassword {
-    grid-area: 3 / 2 / 4 / 3;
-    margin: 0 auto;
+    grid-area: 5 / 2 / 6 / 3;
+    margin: 1em auto;
     text-align: center;
     width: 190px;
   }
+}
+
+.editLine1 {
+  grid-area: 2 / 1 / 3 / 4;
+}
+
+.editLine2 {
+  grid-area: 4 / 1 / 5 / 4;
 }
