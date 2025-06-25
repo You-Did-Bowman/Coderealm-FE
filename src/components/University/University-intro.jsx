@@ -167,7 +167,7 @@ const UniversityIntro = () => {
   return (
     <div className="university-intro min-h-screen">
       {/* Header */}
-      <div className="header-container relative w-full h-[250px] sm:h-[300px] md:h-[350px] flex items-center justify-center overflow-hidden">
+      <div className="header-container relative w-full h-[250px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center tracking-wide text-white floating-animation">
             UNIVERSITY OF

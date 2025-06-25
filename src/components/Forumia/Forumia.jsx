@@ -151,11 +151,29 @@ export default function Forumia() {
 
   return (
     <section className="gradient-bg">
+      {/* Header */}
+      <div className="header-container relative w-full h-[250px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
+          <h1 className=" font-bold text-center tracking-wide text-white floating-animation">
+            <span className="highlight-text">FORUMIA</span>
+          </h1>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1f1f] via-[#002d28] to-[#0a1f1f] opacity-95"></div>
+        <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-[#011414] to-transparent"></div>
+
+        {/* Animated floating elements */}
+        <div className="absolute top-1/4 left-1/4 w-6 h-6 rounded-full bg-[#2cc295] opacity-20 floating-element-1"></div>
+        <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-[#FCA5A5] opacity-15 floating-element-2"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-10 h-10 rounded-full bg-[#2cc295] opacity-10 floating-element-3"></div>
+      </div>
+
+      {/* Background bubbles */}
       <div className="gradient-container">
         <div className="g1"></div>
         <div className="g2"></div>
         <div className="g3"></div>
 
+        {/* Content */}
         <>
           {/* overlay with the single post component  */}
           {renderSinglePostPage && (
@@ -265,10 +283,7 @@ export default function Forumia() {
               <aside className="forumiaMainContainer w-full border-2 bg-[#0323;] border-accent rounded-md md:rounded-2xl z-10  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
                 {/* Buttons */}
                 <article className="flex gap-4 justify-end items-center px-6">
-                  <button
-                    onClick={() => setNewPost(true)}
-                    className=""
-                  >
+                  <button onClick={() => setNewPost(true)} className="">
                     New Post
                   </button>
                 </article>
