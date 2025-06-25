@@ -54,13 +54,13 @@ const CreatePost = ( { fetchingData,setNewPost}) => {
   };
 
   return (
-    <div className="min-h-screen w-full  z-10 top-0 left-0 fixed bg-[#0f0f1c] flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen w-full  z-10 top-0 left-0 fixed bg-[#0f0f1c]/90 flex items-center justify-center px-4 py-10">
        
       <section className="w-full max-w-3xl p-6 bg-gradient-to-r from-[#1F404D] via-[#237A53] to-[#718575] rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
-      <button    onClick={() => {
+      <p    onClick={() => {
  
     setNewPost(false);
-  }} className="float-right w-[25px] font-bold text-white text-xl hover:text-red-500"  role="close">X</button>
+  }} className=" cursor-pointer border-none float-right w-[25px] font-bold text-white text-xl hover:text-red-500 flex items-center justify-center "  role="close">X</p>
         <h2 className="text-white text-3xl font-vt323 mb-6 border-b-2 border-secondary pb-2">
           Create New Post
         </h2>

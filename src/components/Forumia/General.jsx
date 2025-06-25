@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useMemo, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/images/userImage.jpeg";
 import { UserContext } from "../../contexts/userIdContext";
@@ -7,30 +7,75 @@ const General = ({ posts }) => {
   const navigate = useNavigate();
   const [profileAvatar, setProfileAvatar] = useState({});
   const { token } = useContext(UserContext);
+  const [communityPostCount, setCommunityPostCount] = useState({});
 
-  const userPosts = [
-    {
-      id: 1,
-      title: "Rules",
-      description: "Learn the Do's and Don't's of Forumioa",
-      post: posts.filter((p) => p.community === "Rules"),
-    },
-    {
-      id: 2,
-      title: "Hello-world",
-      description: "Introduce yourself",
-      post: posts.filter((p) => p.community === "Hello-world"),
-    },
-  ].map((item) => {
-    const postsLength = item.post.length;
-    const latestPost = postsLength > 0 ? item.post[postsLength - 1] : null;
+  const userPosts = useMemo(() => {
+    return [
+      {
+        id: 1,
+        title: "Rules",
+        description: "Learn the Do's and Don't's of Forumioa",
+        post: posts.filter((p) => p.community === "Rules"),
+      },
+      {
+        id: 2,
+        title: "Hello-world",
+        description: "Introduce yourself",
+        post: posts.filter((p) => p.community === "Hello-world"),
+      },
+    ].map((item) => {
+      const postsLength = item.post.length;
+      const latestPost = postsLength > 0 ? item.post[postsLength - 1] : null;
+      return {
+        ...item,
+        postsLength,
+        latestPost,
+      };
+    });
+  }, [posts]);
 
-    return {
-      ...item,
-      postsLength,
-      latestPost,
+  // fetch all  community posts
+
+  const fetchCommunityPostCount = async (communityId) => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/posts/count/community/${communityId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      return data.count || 0;
+    } catch (err) {
+      console.error(
+        `Error fetching post count for community ${communityId}:`,
+        err
+      );
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const counts = {};
+      for (const item of userPosts) {
+        const count = await fetchCommunityPostCount(item.id);
+        counts[item.id] = count;
+      }
+      setCommunityPostCount(counts);
     };
-  });
+
+    if (userPosts.length > 0) {
+      fetchCounts();
+    }
+  }, [userPosts]);
 
   const fetchProfileAvatar = async (userId) => {
     try {
@@ -81,13 +126,14 @@ const General = ({ posts }) => {
             key={item.id}
             className="flex flex-col sm:flex-row justify-between items-start last:border-none sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-green-700 p-3 hover:rounded-md transition-colors"
             role="button"
-            
           >
             {/* Left side */}
-            <div className="flex gap-4 w-full sm:w-2/3 items-center"
-            onClick={() => {
-              navigate(`/forumia/posts/${item.title}`);
-            }}>
+            <div
+              className="flex gap-4 w-full sm:w-2/3 items-center"
+              onClick={() => {
+                navigate(`/forumia/posts/${item.title}`);
+              }}
+            >
               <div className="text-white text-sm">
                 <p className="font-bold text-md mb-1">{item.title}</p>
                 <div className="text-[11px] flex gap-1">
@@ -100,7 +146,11 @@ const General = ({ posts }) => {
             <div className=" flex items-center w-full sm:w-1/3 mt-4 sm:mt-0 justify-between text-white text-sm min-h-[64px]">
               <div className="relative pl-4 ml-4 flex flex-col text-[11px] items-center ">
                 Posts
-                <span className="px-2">{item.postsLength}</span>
+                <span className="px-2">
+                  {communityPostCount[item.id] === undefined
+                    ? "Loading..."
+                    : communityPostCount[item.id]}
+                </span>
               </div>
 
               {item.postsLength > 0 && (
