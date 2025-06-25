@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/images/userImage.jpeg";
 import { UserContext } from "../../contexts/userIdContext";
@@ -6,31 +6,72 @@ import { UserContext } from "../../contexts/userIdContext";
 const TheHub = ({ posts }) => {
   const navigate = useNavigate();
   const [profileAvatar, setProfileAvatar] = useState({});
+  const [communityPostCount, setCommunityPostCount] = useState({});
   const { token } = useContext(UserContext);
 
-  const hubPosts = [
-    {
-      id: 1,
-      title: "Off-Topic",
-      description: "Whatever comes to your mind",
-      post: posts.filter((p) => p.community === "Off-Topic"),
-    },
-    {
-      id: 2,
-      title: "General-Discussions",
-      description: "Whatever comes to your mind",
-      post: posts.filter((p) => p.community === "General-Discussions"),
-    },
-  ].map((item) => {
-    const postsLength = item.post.length;
-    const latestPost = postsLength > 0 ? item.post[postsLength - 1] : null;
+  const hubPosts = useMemo(() => {
+    return [
+      {
+        id: 6,
+        title: "Off-Topic",
+        description: "Whatever comes to your mind",
+        post: posts.filter((p) => p.community === "Off-Topic"),
+      },
+      {
+        id: 7,
+        title: "General-Discussions",
+        description: "Whatever comes to your mind",
+        post: posts.filter((p) => p.community === "General-Discussions"),
+      },
+    ].map((item) => {
+      const postsLength = item.post.length;
+      const latestPost = postsLength > 0 ? item.post[postsLength - 1] : null;
 
-    return {
-      ...item,
-      postsLength,
-      latestPost,
+      return {
+        ...item,
+        postsLength,
+        latestPost,
+      };
+    });
+  }, [posts]);
+
+  const fetchCommunityPostCount = async (communityId) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/posts/count/community/${communityId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      return data.count || 0;
+    } catch (err) {
+      console.error(
+        `Error fetching post count for community ${communityId}:`,
+        err
+      );
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const counts = {};
+      for (const item of hubPosts) {
+        const count = await fetchCommunityPostCount(item.id);
+        counts[item.id] = count;
+      }
+      setCommunityPostCount(counts);
     };
-  });
+
+    if (hubPosts.length > 0) {
+      fetchCounts();
+    }
+  }, [hubPosts]);
 
   const fetchProfileAvatar = async (userId) => {
     try {
@@ -46,14 +87,12 @@ const TheHub = ({ posts }) => {
 
       const data = await response.json();
 
-      // console.log("data", data);
-
       setProfileAvatar((prevAvatars) => ({
         ...prevAvatars,
         [userId]: data.image_url || userImage,
       }));
     } catch (error) {
-      console.error("Error fetching profileAvatarfor user: ", userId, error);
+      console.error("Error fetching profile avatar for user: ", userId, error);
     }
   };
 
@@ -82,9 +121,7 @@ const TheHub = ({ posts }) => {
             {/* Left side */}
             <div
               className="flex gap-4 w-full sm:w-2/3 items-center"
-              onClick={() => {
-                navigate(`/forumia/posts/${item.title}`);
-              }}
+              onClick={() => navigate(`/forumia/posts/${item.title}`)}
             >
               <div className="text-white text-sm">
                 <p className="font-bold text-md mb-1">{item.title}</p>
@@ -98,7 +135,11 @@ const TheHub = ({ posts }) => {
             <div className="flex items-center w-full sm:w-1/3 mt-4 sm:mt-0 justify-between text-white text-sm min-h-[64px]">
               <div className="relative pl-4 ml-4 flex flex-col text-[11px] items-center">
                 Posts
-                <span className="px-2">{item.postsLength}</span>
+                <span className="px-2">
+                  {communityPostCount[item.id] === undefined
+                    ? "Loading..."
+                    : communityPostCount[item.id]}
+                </span>
               </div>
 
               {item.postsLength > 0 && (
@@ -109,7 +150,9 @@ const TheHub = ({ posts }) => {
                     }
                   >
                     <img
-                      src={profileAvatar[item.latestPost?.user_id] || userImage}
+                      src={
+                        profileAvatar[item.latestPost?.user_id] || userImage
+                      }
                       alt="user"
                       className="w-8 h-8 rounded-full object-cover"
                     />
@@ -117,7 +160,7 @@ const TheHub = ({ posts }) => {
 
                   <div className="flex w-3/5 flex-col items-start text-[11px] max-w-[100px]">
                     <p className="overflow-hidden text-ellipsis whitespace-nowrap w-full block text-left">
-                      {item.latestPost?.title || "No Title"}
+                      From:
                     </p>
                     <a
                       onClick={() =>
