@@ -249,7 +249,7 @@ function ProfilNav() {
                   <h3>Joined</h3> <p>{joined}</p>
                 </div>
                 <div>
-                  <h3>Social</h3> <a href= {userData.social}>{userData.social}</a>
+                  <h3>Social</h3> <a href= {userData.social.startsWith("http") ? userData.social : `https://${userData.social}`} target="_blank">{userData.social}</a>
                 </div>
                 {userId === profileId ? (
                   <button onClick={() => navigate("/edit-profile")}>
@@ -291,8 +291,6 @@ function ProfilNav() {
                   ))}
                 </div>
               </div>
-
-              <div className="line3 corruption-line w-full h-1"></div>
 
               <div className="profilePosts">
                 <h2>Posts</h2>
