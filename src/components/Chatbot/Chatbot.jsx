@@ -3,35 +3,28 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+import JadaScene from "../Jada/JadaScene.jsx";
+import "./Chatbot.scss";
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello, I'm J.A.D.A." },
+    { role: "assistant", content: "Hi there, I'm J.A.D.A." },
   ]);
 
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-
   const endRef = useRef(null);
 
   useEffect(() => {
-    if (hasInteracted && endRef.current) {
+    if (endRef.current) {
       endRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, hasInteracted]);
+  }, [messages]);
 
   useEffect(() => {
     return () => {
       document.body.classList.remove("chat-active");
     };
-  }, []);
-
-  useEffect(() => {
-    if (messages.some((msg) => msg.role !== "system")) {
-      setHasInteracted(true);
-      document.body.classList.add("chat-active");
-    }
   }, []);
 
   const sendMessage = async () => {
@@ -48,15 +41,9 @@ export default function Chatbot() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages }),
       });
-      console.log(res);
 
       const data = await res.json();
       setMessages([...newMessages, { role: "assistant", content: data.reply }]);
-
-      if (!hasInteracted) {
-        setHasInteracted(true);
-        document.body.classList.add("chat-active");
-      }
     } catch (err) {
       console.error("Error:", err);
       setMessages([
@@ -66,27 +53,16 @@ export default function Chatbot() {
     } finally {
       setLoading(false);
     }
-    console.log("hasInteracted =", hasInteracted);
   };
 
   return (
-  <div className="flex h-screen">
-    {/* Chatbot Layout */}
-    <div className="flex flex-col flex-1 h-full">
-      <div
-        className={`transition-all duration-500 ease-in-out w-full max-w-xl mx-auto p-4 text-white flex-1 ${
-          hasInteracted
-            ? "flex flex-col translate-y-0"
-            : "flex justify-center items-center flex-col translate-y-1/3"
-        }`}
-      >
-        <div
-          className={`transition-all duration-500 ease-in-out overflow-y-auto px-8 py-2 space-y-4 ${
-            hasInteracted
-              ? "flex-1 opacity-100 scale-100"
-              : "max-h-0 opacity-0 scale-95 overflow-hidden pointer-events-none"
-          }`}
-        >
+  <div className="flex h-[780px] bg-background text-white overflow-hidden">
+    {/* Chat Panel */}
+    <div className="flex flex-col w-1/2 border-r border-surface ml-32">
+      {/* Chat Container */}
+      <div className="flex flex-col flex-1 w-full max-w-xl mx-auto p-4 overflow-auto scrollable">
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto px-8 py-2 space-y-4">
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -154,21 +130,18 @@ export default function Chatbot() {
           <div ref={endRef} />
         </div>
 
-        <div
-          className={`mt-4 w-full flex-shrink-0 px-8 ${
-            hasInteracted ? "" : "max-w-md"
-          }`}
-        >
+        {/* Input Field */}
+        <div className="mt-4 w-full flex-shrink-0 px-8">
           <div className="flex gap-2">
             <input
-              className="flex-1 bg-transparent border border-secondary text-black rounded-xl px-3 py-2 focus:outline-none"
+              className="flex-1 bg-transparent border border-secondary text-white rounded-xl px-3 py-2 focus:outline-none"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder="Type your message..."
             />
             <button
-              className="bg-secondary text-black px-4 py-2 rounded-xl disabled:opacity-50 hover:bg-secondaryHover transition"
+              className="px-4 py-2 rounded-xl disabled:opacity-50 transition"
               onClick={sendMessage}
               disabled={loading || !input.trim()}
             >
@@ -179,7 +152,10 @@ export default function Chatbot() {
       </div>
     </div>
 
-    
+    {/* Jada Scene */}
+    <div className="w-1/3 h-full">
+      <JadaScene />
+    </div>
   </div>
 );
 
