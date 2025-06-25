@@ -1,3 +1,6 @@
+@import "../../style/variables.scss";
+@import "../../style/mixins.scss";
+
 .glitch {
   /* Typography */
   font-family: "vt323", sans-serif;
@@ -180,45 +183,5 @@
 
 // buttons
 .jada-button {
-  position: relative;
-  padding: 0.5rem 1.5rem;
-  font-family: 'Arial', sans-serif;
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #fff;
-  background-color: transparent;
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  cursor: pointer;
-  z-index: 0;
-  transition: all 0.3s ease;
-
-  // gradient border 
-  background-image: linear-gradient(#333, #111),
-    linear-gradient(220deg, #ffffff, #008fd1);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-
-  // icon spacing
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    transform: scale(1.03);
-    filter: brightness(1.2);
-  }
-
-  // inset glow
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    filter: blur(6px);
-    z-index: -1;
-    opacity: 0.5;
-  }
+  @include jada-button;
 }

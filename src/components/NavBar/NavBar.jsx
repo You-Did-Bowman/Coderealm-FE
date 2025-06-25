@@ -49,8 +49,10 @@ const NavBar = () => {
   return (
     <>
       <nav className="custom-navbar">
+
+      <NavLink to={`/landingPageUser/${userId}/${token}`}> <i class="fa-solid fa-house"></i> </NavLink>
         <div className={"navRealm"}>
-          <NavLink to={`/landingPageUser/${userId}/${token}`}> Home </NavLink>
+          
           {[
             "university",
             "forumia",

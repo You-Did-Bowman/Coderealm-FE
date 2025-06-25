@@ -164,7 +164,7 @@ const LoginPage = () => {
         <div className="flex justify-center mb-6">
           <FaUserCircle className="text-6xl text-accent" />
         </div>
-        <h2 className="text-2xl font-vt323 text-white tracking-wider text-center mb-14">
+        <h2 className="text-2xl font-vt323 text-white text-center ">
           Login to Your Account
         </h2>
         <form
@@ -221,10 +221,10 @@ const LoginPage = () => {
               </NavLink>
             </div>
           </div>
-          <div>
+          <div className="mx-auto">
             <button
               type="submit"
-              className="w-full bg-secondary font-vt323 md:text-2xl py-2 rounded-md hover:bg-opacity-90 transition"
+              className=" bg-secondary font-vt323 md:text-2xl  rounded-md hover:bg-opacity-90 transition"
             >
               LogIn
             </button>

@@ -125,8 +125,15 @@
 }
 
 .lpuExploreBar {
-  background: linear-gradient(220deg, #024636 0%, $richBlack 70%);
-  border: 1px solid $darkGreen;
+  //background: linear-gradient(220deg, #024636 0%, $richBlack 70%);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+    to right,
+    transparent,
+    lab(79.82% 41.71 -22.72),
+    transparent
+  );
+  border-image-slice: 1;
   color: white;
   min-height: 4rem;
   display: flex;
@@ -147,8 +154,8 @@
 .lpuInviteWrapper {
   border: 2px solid $stone;
   border-radius: 0% 10% 0% 10% / 40% 30% 40% 30%;
-  width: 50%;
-  background: $richBlack;
+  width: 40%;
+  background: #141414b4;
   margin: 4em auto;
   position: relative;
   z-index: 1;
@@ -167,6 +174,10 @@
 
     input {
       margin: 2em 1em;
+    }
+
+    button {
+      @include jada-button;
     }
   }
 }
