@@ -1,0 +1,7 @@
+@import "../../style/variables.scss";
+@import "../../style/mixins.scss";
+
+.postPageContainer {
+    border: 2px solid red;
+    background-color: $cardBg;
+}

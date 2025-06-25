@@ -11,36 +11,35 @@
   left: 0;
 
   .gradient-container {
-    
     position: relative;
     .g1 {
-    @include bg-circle;
-    top: 100px;
-    left: -300px;
-  }
+      @include bg-circle;
+      top: 100px;
+      left: -300px;
+    }
 
-  .g2 {
-    @include bg-circle;
-    
-    top: 400px;
-    right: -150px;
-  }
+    .g2 {
+      @include bg-circle;
 
-  .g3 {
-    @include bg-circle;
-    
-    top: 1100px;
-    left: 200px;
+      top: 400px;
+      right: -150px;
+    }
+
+    .g3 {
+      @include bg-circle;
+
+      top: 1100px;
+      left: 200px;
+    }
+
+    .g4 {
+      @include bg-circle;
+
+      top: 2000px;
+      right: 250px;
+      overflow: visible;
+    }
   }
-  
-  .g4 {
-    @include bg-circle;
-    
-    top: 2000px;
-    right: 250px;
-    overflow: visible;
-  }
-}
 }
 
 .lpuHeaderWrapper {
@@ -92,7 +91,7 @@
         padding: 2em 0;
 
         div {
-          margin: .5em 0;
+          margin: 0.5em 0;
         }
 
         h3 {
@@ -127,12 +126,12 @@
 .lpuExploreBar {
   //background: linear-gradient(220deg, #024636 0%, $richBlack 70%);
   border-bottom: 2px solid transparent;
-  border-image: linear-gradient(
-    to right,
-    transparent,
-    lab(79.82% 41.71 -22.72),
-    transparent
-  );
+  border-image: linear-gradient(90deg, 
+  rgba(106, 13, 173, 0) 0%, 
+  rgba(106, 13, 173, 1) 20%,
+  rgba(255, 0, 255, 1) 50%,
+  rgba(106, 13, 173, 1) 80%,
+  rgba(106, 13, 173, 0) 100%);
   border-image-slice: 1;
   color: white;
   min-height: 4rem;
@@ -155,7 +154,7 @@
   border: 2px solid $stone;
   border-radius: 0% 10% 0% 10% / 40% 30% 40% 30%;
   width: 40%;
-  background: #141414b4;
+  background: $cardBg;
   margin: 4em auto;
   position: relative;
   z-index: 1;

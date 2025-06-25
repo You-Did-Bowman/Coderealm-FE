@@ -15,7 +15,7 @@
   width: 60%;
   padding: 2em;
   border-radius: 50px;
-  background-color: $richBlack;
+  background-color: $cardBg;
   border: 1px solid rgba(255, 255, 255, 0.075);
   margin: 6em auto;
 
@@ -42,8 +42,9 @@
     }
 
     button {
-      margin-left: 4em;
+      margin-left: 8em;
       grid-area: 2 / 4 / 3 / 5;
+      width: 120px;
     }
 
     grid-area: 1 / 1 / 2 / 4;
@@ -108,5 +109,8 @@
 
   .buttonPassword {
     grid-area: 3 / 2 / 4 / 3;
+    margin: 0 auto;
+    text-align: center;
+    width: 190px;
   }
 }

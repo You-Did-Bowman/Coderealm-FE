@@ -116,15 +116,17 @@ const General = ({ posts }) => {
 
   return (
     <article className="w-[90%] max-w-full mx-auto mt-10 p-6">
-      <h3 className="text-white border-b-4 py-4  border-dashed border-red-300 font-vt323 text-[25px] font-normal">
+      <h3 className="text-white font-vt323 text-[25px] font-normal">
         General
       </h3>
+
+      <div className="corruption-line w-full h-1"></div>
 
       <div className="flex flex-col mt-5">
         {userPosts.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row justify-between items-start last:border-none sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-green-700 p-3 hover:rounded-md transition-colors"
+            className="forumiaPost flex flex-col sm:flex-row justify-between items-start last:border-none sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer transition-colors"
             role="button"
           >
             {/* Left side */}

@@ -103,7 +103,7 @@ const SinglePostAndComments = ({
 
   return (
     <section className="h-full fixed inset-0 z-20 bg-[#0f0f1c]/90 flex items-center justify-center px-4 py-10">
-      <div className="relative w-full max-w-2xl p-6 bg-gradient-to-r from-[#1F404D] via-[#237A53] to-[#718575] rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.2)]">
+      <div className="forumiaSingleContainer relative w-full max-w-2xl p-6 rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.2)]">
         <p
         role="Button"
           onClick={() => setRenderSinglePostPage(false)}
@@ -146,8 +146,10 @@ const SinglePostAndComments = ({
           </svg>
         </div>
 
+        <div className="corruption-line w-full h-1"></div>
+
         {showComments && (
-          <section className="border-t border-accent pt-6">
+          <section className="">
             <form
               onSubmit={(e) => addComment(e, singlePostInfos.id)}
               className="mb-6"
