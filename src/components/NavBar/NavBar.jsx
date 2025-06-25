@@ -73,7 +73,7 @@ const NavBar = () => {
             onClick={() => setIsOpen(!isOpen)}
             src={avatar || placeholderAvatar}
           />{" "}
-          <div className="dropdown">
+          <div className="dropdown ">
             <motion.ul
               initial="closed"
               animate={isOpen ? "open" : "closed"}
