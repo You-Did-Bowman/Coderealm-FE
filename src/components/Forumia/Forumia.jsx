@@ -19,6 +19,7 @@ export default function Forumia() {
   const [profileAvatar, setProfileAvatar] = useState({});
   const [amountPosts, setAmountPosts] = useState();
   const [newPost, setNewPost] = useState(false);
+  
   // -*-*- CONTEXTS -*-*-
   const { posts, userId, setPosts, fetchingData, token } =
     useContext(UserContext);
@@ -133,6 +134,7 @@ export default function Forumia() {
     }
   };
 
+
   useEffect(() => {
     posts.forEach((post) => {
       if (post.user_id && !profileAvatar[post.user_id]) {
@@ -170,13 +172,7 @@ export default function Forumia() {
         <div className="flex flex-col md:flex-row gap-10  m-auto w-[80%] px-4 md:px-0">
           {/* left side */}
           <section className="w-full md:w-1/3 space-y-8 ">
-            <article className="p-6 text-white border-2 border-accent rounded-md md:rounded-2xl py-14 shadow-[0_8px_30px_rgba(200,200,180,0.2)]">
-              <h3 className=" font-vt323 text-[25px] font-normal  text-accent">
-                Members online
-              </h3>
-              {/* Loop here */}
-              <p className="py-2">User1, Doniweb, Edal, TommysNetwork</p>
-            </article>
+            
             <article className="p-6 text-white  border-2 max-h-[450px] overflow-y-auto  custom-scrollbar  border-accent rounded-md md:rounded-2xl shadow-[0_8px_30px_rgba(200,200,180,0.2)]">
               <h3 className="font-vt323 w-full  text-[25px] font-normal text-accent">
                 Top
@@ -367,7 +363,7 @@ export default function Forumia() {
 
             {/* -*-*- COMMUNITIES -*-*- */}
             {/*General */}
-            <General posts={posts}/>
+            <General  posts={posts}/>
 
             {/*University of Terminalia */}
             <UniversityOfTerminalia posts={posts} fetchProfileAvatar = {fetchProfileAvatar}/>

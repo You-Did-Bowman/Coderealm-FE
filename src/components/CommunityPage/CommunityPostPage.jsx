@@ -22,7 +22,8 @@ const CommunityPostPage = () => {
   const selectedCommunity = communities.find((c) => c.name === community);
   const communityId = selectedCommunity?.id;
   const {  userId } = useContext(UserContext);
-
+ console.log(communityId);
+ 
   // States for managing posts and pagination
   const [communityPosts, setCommunityPosts] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -354,6 +355,10 @@ const CommunityPostPage = () => {
       }
     });
   }, [communityPosts]);
+
+
+
+
 
   return (
  

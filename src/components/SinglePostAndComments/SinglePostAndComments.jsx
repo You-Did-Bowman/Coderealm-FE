@@ -104,12 +104,13 @@ const SinglePostAndComments = ({
   return (
     <section className="h-full fixed inset-0 z-20 bg-[#0f0f1c]/90 flex items-center justify-center px-4 py-10">
       <div className="relative w-full max-w-2xl p-6 bg-gradient-to-r from-[#1F404D] via-[#237A53] to-[#718575] rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.2)]">
-        <button
+        <p
+        role="Button"
           onClick={() => setRenderSinglePostPage(false)}
-          className="absolute top-4 right-4 text-accent hover:text-white transition"
+          className="cursor-pointer border-none  hover:text-red-600 absolute top-4 right-4 text-accent transition"
         >
           ✕
-        </button>
+        </p>
 
         <article className="mb-8">
           <h1 className="text-accent text-3xl font-vt323 mb-2">
