@@ -495,7 +495,7 @@ export default function University() {
                 <h3 className="text-[#2cc295] text-xl font-semibold mb-6">
                   Example
                 </h3>
-                <div className="bg-[#0a1f1f] p-6 rounded-lg border border-[#FCA5A530]">
+                <div className="bg-[#0a1f1f]  p-6 rounded-lg border border-[#FCA5A530]">
                   <SyntaxHighlighter
                     style={oneDark}
                     language={exercise.language}
@@ -510,10 +510,10 @@ export default function University() {
           </div>
           
           {/* Exercise Description */}
-          <div className="content-panel rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
-            <div className="flex justify-between items-center mb-4">
+          <div className="content-panel   rounded-xl p-5 bg-gradient-to-br from-[#0a1f1f] to-[#011414] border border-[#FCA5A530] backdrop-blur-sm">
+            <div className="flex  justify-between items-center mb-4">
               <h2 className="text-2xl text-[#2cc295]">{exercise.title}</h2>
-              <div className="flex items-center space-x-2">
+              <div className="flex  items-center space-x-2">
                 <span
                   className={`px-2 py-1 text-sm rounded-full ${
                     exercise.difficulty === "Easy" ? "bg-[#2cc295] text-[#011414]" :
