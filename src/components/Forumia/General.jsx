@@ -156,7 +156,7 @@ const General = ({ posts }) => {
               </div>
 
               {item.postsLength > 0 && (
-                <div className=" relative w-3/5 pl-4 ml-4 flex items-center justify-evenly gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-red-300 before:rounded">
+                <div className=" relative w-3/5 pl-4 ml-4 flex items-center justify-evenly gap-4 before:absolute before:top-2 before:left-0 before:h-4/5 before:w-[2px] before:bg-white before:rounded">
                   <a
                     onClick={() =>
                       navigate(`/profile/${item.latestPost.user_id}`)
