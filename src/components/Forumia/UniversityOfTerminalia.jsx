@@ -47,7 +47,9 @@ const UniversityOfTerminalia = ({ posts }) => {
   const fetchCommunityPostCount = async (communityId) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/posts/count/community/${communityId}`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/posts/count/community/${communityId}`,
         {
           method: "GET",
           headers: {
@@ -116,15 +118,17 @@ const UniversityOfTerminalia = ({ posts }) => {
 
   return (
     <article className="w-[90%] max-w-full mx-auto mt-10 p-6">
-      <h3 className="text-white border-b-4 py-4 border-dashed border-red-300 font-vt323 text-[25px] font-normal">
+      <h3 className="text-white font-vt323 text-[25px] font-normal">
         University of Terminalia
       </h3>
+
+      <div className="corruption-line w-full h-1"></div>
 
       <div className="flex flex-col mt-5">
         {universityPosts.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row last:border-none justify-between items-start sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer hover:bg-green-700 p-3 hover:rounded-md transition-colors"
+            className="forumiaPost flex flex-col sm:flex-row last:border-none justify-between items-start sm:items-center border-b-2 border-accent min-h-[64px] cursor-pointer transition-colors"
             role="button"
           >
             {/* Left side */}
@@ -159,9 +163,7 @@ const UniversityOfTerminalia = ({ posts }) => {
                     }
                   >
                     <img
-                      src={
-                        profileAvatar[item.latestPost?.user_id] || userImage
-                      }
+                      src={profileAvatar[item.latestPost?.user_id] || userImage}
                       alt="user"
                       className="w-8 h-8 rounded-full object-cover"
                     />

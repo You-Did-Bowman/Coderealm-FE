@@ -49,12 +49,12 @@ body {
     width: 60%;
     padding: 2em;
     border-radius: 50px;
-    background-color: $richBlack;
+    background-color: $cardBg;
     border: 1px solid rgba(255, 255, 255, 0.075);
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr 15px 225px 15px 1fr 15px 1fr;
+    grid-template-rows: .5fr 15px 225px 15px 1fr 15px 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
@@ -120,7 +120,8 @@ body {
     }
 
     button {
-      width: 125px;
+      margin-top: 2em;
+      width: 152px;
     }
   }
 
