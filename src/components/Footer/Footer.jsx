@@ -10,10 +10,10 @@ function Footer() {
   return (
     <>
       <footer className="">
-       <a href ="https://github.com/Ahmad-al-sayedd"><i className="fa-brands fa-github"></i>Ahmad Al Sayed</a>
-       <a href="https://github.com/AndyZekaj"><i className="fa-brands fa-github"></i>Avdyl Zekaj</a>
-       <a href="https://github.com/divyasheen"><i className="fa-brands fa-github"></i>Divya Sheen</a>
-       <a href="https://github.com/You-Did-Bowman"><i className="fa-brands fa-github"></i>Judith Bohmann</a>
+       <a href ="https://github.com/Ahmad-al-sayedd" target="_blank"><i className="fa-brands fa-github"></i>Ahmad Al Sayed</a>
+       <a href="https://github.com/AndyZekaj" target="_blank"><i className="fa-brands fa-github"></i>Avdyl Zekaj</a>
+       <a href="https://github.com/divyasheen" target="_blank"><i className="fa-brands fa-github"></i>Divya Sheen</a>
+       <a href="https://github.com/You-Did-Bowman" target="_blank"><i className="fa-brands fa-github"></i>Judith Bohmann</a>
 
 
 

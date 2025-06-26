@@ -280,7 +280,7 @@ export default function Forumia() {
               </section>
 
               {/* right side */}
-              <aside className="forumiaMainContainer w-full border-2 bg-[#0323;] border-accent rounded-md md:rounded-2xl z-10  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
+              <aside className="forumiaMainContainer w-full border-2 border-accent rounded-md md:rounded-2xl z-10  py-14 shadow-[0_8px_30px_rgba(255,255,255,0.4)]">
                 {/* Buttons */}
                 <article className="flex gap-4 justify-end items-center px-6">
                   <button onClick={() => setNewPost(true)} className="">

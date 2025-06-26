@@ -12,8 +12,12 @@
   background-color: $bg;
 }
 
-.forumiaSingleContainer {
+.forumiaSingleContainer, .createPostContainer {
   background-color: #141414e3;
+}
+
+.createPostInput {
+  border: 2px solid #626e6e; 
 }
 
 .corruption-line {

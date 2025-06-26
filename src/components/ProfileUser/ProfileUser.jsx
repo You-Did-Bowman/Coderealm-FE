@@ -228,88 +228,98 @@ function ProfilNav() {
           <div className="g3"></div>
           <div className="g4"></div>
           <div className="profileContentWrapper">
-
-          <div className="profileHeader"></div>
-          {userData ? (
-            <div className="profileWrapper">
-              <div className="profileAvatar">
-                <img src={profileAvatar || placeholderAvatar} />
-                <div>{userData.username}</div>
-              </div>
-
-              <div className="profileInfo">
-                <div>
-                  <h2>Info</h2>
-                  {userData.info === 0 ? "" : userData.info}
+            <div className="profileHeader"></div>
+            {userData ? (
+              <div className="profileWrapper">
+                <div className="profileAvatar">
+                  <img src={profileAvatar || placeholderAvatar} />
+                  <div>{userData.username}</div>
                 </div>
-                <div>
-                  <h3>Location</h3> <p>{userData.location}</p>
-                </div>
-                <div>
-                  <h3>Joined</h3> <p>{joined}</p>
-                </div>
-                <div>
-                  <h3>Social</h3> <a href= {userData.social}>{userData.social}</a>
-                </div>
-                {userId === profileId ? (
-                  <button onClick={() => navigate("/edit-profile")}>
-                    Edit Profile
-                  </button>
-                ) : (
-                  <div></div>
-                )}
-              </div>
 
-              <div className="line1 corruption-line w-full h-1"></div>
+                <div className="profileInfo">
+                  <div>
+                    <h2>Info</h2>
+                    {userData.info === 0 ? "" : userData.info}
+                  </div>
+                  <div>
+                    <h3>Location</h3> <p>{userData.location}</p>
+                  </div>
+                  <div>
+                    <h3>Joined</h3> <p>{joined}</p>
+                  </div>
+                  <div>
+                    <h3>Social</h3>
+                    <a
+                      href={
+                        userData?.social
+                          ? userData.social.startsWith("http")
+                            ? userData.social
+                            : `https://${userData.social}`
+                          : "https://default.com" // Default-Wert
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {userData?.social || "-"} {/* Default-Text */}
+                    </a>
+                  </div>
+                  {userId === profileId ? (
+                    <button onClick={() => navigate("/edit-profile")}>
+                      Edit Profile
+                    </button>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
 
-              <div className="profileStats">
-                <h2>XP</h2>
-                <ProgressBar
-                  className="xpBar"
-                  maxCompleted={300}
-                  completed={userData.xp}
-                  customLabel={userData.xp}
+                <div className="line1 corruption-line w-full h-1"></div>
+
+                <div className="profileStats">
+                  <h2>XP</h2>
+                  <ProgressBar
+                    className="xpBar"
+                    maxCompleted={300}
+                    completed={userData.xp}
+                    customLabel={userData.xp}
                   />
-              </div>
+                </div>
 
-              <div className="line2 corruption-line w-full h-1"></div>
+                <div className="line2 corruption-line w-full h-1"></div>
 
-              <div className="profileBadges">
-                <h2>Badges</h2>
-                <div className="singleBadge">
-                  {badges?.map((badge, index) => (
-                    <div key={index}>
-                      <img
-                        className="badgePic"
-                        src={badge.url}
-                        alt={badge.name}
+                <div className="profileBadges">
+                  <h2>Badges</h2>
+                  <div className="singleBadge">
+                    {badges?.map((badge, index) => (
+                      <div key={index}>
+                        <img
+                          className="badgePic"
+                          src={badge.url}
+                          alt={badge.name}
                         />
-                      <h3>{badge.name}</h3>
-                      <p>{badge.description}</p>
-                      <p className="badgeDep">{badge.dependency}</p>
+                        <h3>{badge.name}</h3>
+                        <p>{badge.description}</p>
+                        <p className="badgeDep">{badge.dependency}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="profilePosts">
+                  <h2>Posts</h2>
+                  {posts?.map((post, index) => (
+                    <div key={index}>
+                      <h3>{post.title}</h3>
+                      <p>{post.body}</p>
+                      <p className="dateProfile">{dates[index]}</p>
                     </div>
                   ))}
                 </div>
               </div>
-
-              <div className="line3 corruption-line w-full h-1"></div>
-
-              <div className="profilePosts">
-                <h2>Posts</h2>
-                {posts?.map((post, index) => (
-                  <div key={index}>
-                    <h3>{post.title}</h3>
-                    <p>{post.body}</p>
-                    <p className="dateProfile">{dates[index]}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <p>... Data loading ...</p>
-          )}
-        </div>
+            ) : (
+              <p>... Data loading ...</p>
+            )}
           </div>
+        </div>
       </div>
     </>
   );
