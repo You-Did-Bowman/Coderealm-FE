@@ -67,50 +67,50 @@ The frontend communicates with Coderealm-BE via REST API.
 3. Code submissions are sent to /api/challenges/submit and results displayed in the Monaco editor.
 
 ## Screenshots
-![Screenshot1](/Coderealm-FE/assets-README/Screenshot1_Landing-page.png) 
+![Screenshot1](assets-README/Screenshot1_Landing-page.png) 
 Landing page
 <br>
 <br>
-![Screenshot2](/Coderealm-FE/assets-README/Screenshot2_Landing-page-user-1.png) 
+![Screenshot2](assets-README/Screenshot2_Landing-page-user-1.png) 
 Landing page user - Stats overview
 <br>
 <br>
-![Screenshot3](/Coderealm-FE/assets-README/Screenshot3_Landing-page-user-2.png) 
+![Screenshot3](assets-README/Screenshot3_Landing-page-user-2.png) 
 <br>
 Landing page user - Explore the realm
 <br>
 <br>
-![Screenshot4](/Coderealm-FE/assets-README/Screenshot4_University-course-overview.png) 
+![Screenshot4](assets-README/Screenshot4_University-course-overview.png) 
 <br>
 University - Courses Overview
 <br>
 <br>
-![Screenshot5](/Coderealm-FE/assets-README/Screenshot5_University-lesson.png) 
+![Screenshot5](assets-README/Screenshot5_University-lesson.png) 
 <br>
 University - Lesson
 <br>
 <br>
-![Screenshot6](/Coderealm-FE/assets-README/Screenshot6_Forumia.png) 
+![Screenshot6](assets-README/Screenshot6_Forumia.png) 
 <br>
 Forumia
 <br>
 <br>
-![Screenshot7](/Coderealm-FE/assets-README/Screenshot7_Forumia-Post.png) 
+![Screenshot7](assets-README/Screenshot7_Forumia-Post.png) 
 <br>
 Forumia - Post
 <br>
 <br>
-![Screenshot8](/Coderealm-FE/assets-README/Screenshot8_Playground.png) 
+![Screenshot8](assets-README/Screenshot8_Playground.png) 
 <br>
 Playground
 <br>
 <br>
-![Screenshot9](/Coderealm-FE/assets-README/Screenshot9_Chatbot.png) 
+![Screenshot9](assets-README/Screenshot9_Chatbot.png) 
 <br>
 Chatbot
 <br>
 <br>
-![Screenshot10](/Coderealm-FE/assets-README/Screenshot10_Profile.png) 
+![Screenshot10](assets-README/Screenshot10_Profile.png) 
 <br>
 Profile
 <br>
